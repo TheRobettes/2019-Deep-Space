@@ -7,26 +7,29 @@
 
 package frc.robot.subsystems;
 
-
-import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class BasicController extends Subsystem {
-  private SpeedController motor;
-  
-public BasicController(SpeedController motor){
-  this.motor = motor;
-}
+public class PistonController extends Subsystem {
+  private DoubleSolenoid pistonFun; 
 
+  public PistonController(DoubleSolenoid pistonFun) {
+    this.pistonFun = pistonFun;
+  }
+
+  public void extend(){
+    pistonFun.set(Value.kForward);
+  }
+
+  public void retract(){
+    pistonFun.set(Value.kReverse);
+  }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public void move (double speed){
-    motor.set(speed);
-  }
 
   @Override
   public void initDefaultCommand() {

@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -18,16 +19,23 @@ import edu.wpi.first.wpilibj.SpeedController;
  */
 public class RobotMap {
 
-  //currently kimmie port numbers 
+  //currently kimmie port numbers (PWM - Roborio/PWM Ports)
   private static int leftDrivePort = 2;
   private static int rightDrivePort = 8;
   private static int hatchPort = 3;
   private static int skiPort = 6;
+  
+  //Pneumatic solenoid numbers (VRM - Voltage Regulator Module)
+  private static int gastonOpenPort = 1;
+  private static int gastonClosedPort = 2; 
+
   //currently kimmie speedcontrollers
   public static SpeedController leftDrive = new Spark(leftDrivePort);
   public static SpeedController rightDrive = new Spark(rightDrivePort);
   public static SpeedController hatch = new Spark (hatchPort);
   public static SpeedController skis = new Spark (skiPort);
+  
+  public static DoubleSolenoid gaston = new DoubleSolenoid(gastonOpenPort, gastonClosedPort);
 
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:

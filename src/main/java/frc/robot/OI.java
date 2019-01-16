@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.BasicMovement;
+import frc.robot.commands.PistonMovement;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -29,7 +30,11 @@ public class OI {
     Button hatchButton = new JoystickButton(secondaryJoystick, 5);
     hatchButton.whileHeld(new BasicMovement(Robot.hatch, 0.5));
 
+    Button extendbutton = new JoystickButton(secondaryJoystick, 6);
+    extendbutton.whileHeld(new PistonMovement(Robot.gaston, PistonMovement.extend));
 
+    Button retractbutton = new JoystickButton(secondaryJoystick, 7);
+    retractbutton.whileHeld(new PistonMovement(Robot.gaston, PistonMovement.retract));
   }
 
   // Joystick stick = new Joystick(port);

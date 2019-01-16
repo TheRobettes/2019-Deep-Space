@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.TeletubbyDrive;
 import frc.robot.subsystems.BasicController;
 import frc.robot.subsystems.DriveChassis;
+import frc.robot.subsystems.PistonController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +28,7 @@ public class Robot extends TimedRobot {
   public static DriveChassis driveChassis = new DriveChassis();
   public static BasicController hatch = new BasicController(RobotMap.hatch);
   public static BasicController skis = new BasicController(RobotMap.skis);
+  public static PistonController gaston = new PistonController(RobotMap.gaston);
   public static OI m_oi;
 
   Command m_autonomousCommand;

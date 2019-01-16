@@ -22,7 +22,7 @@ public class DriveChassis extends Subsystem {
 
  public void arcadeDrive(double speed, double rotation ){
      driving.arcadeDrive(speed, rotation); 
-     System.out.println("Speed:" + speed + " rotation:" + rotation);
+     //System.out.println("Speed:" + speed + " rotation:" + rotation);
 }
 
 
