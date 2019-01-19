@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.BasicMovement;
+import frc.robot.commands.DrivingTheLine;
 import frc.robot.commands.PistonMovement;
 
 /**
@@ -24,6 +25,13 @@ public class OI {
   public static Joystick secondaryJoystick = new Joystick(1);
 
   public OI() {
+    //Primary Joystick Buttons
+    Button illuminationButton = new JoystickButton(xBox, 5); //CHECK BUTTON WITH OLLIE 
+    illuminationButton.whileHeld(new DrivingTheLine());
+    Button luminescenceButton = new JoystickButton(xBox, 6); //CHECK BUTTON WITH OLLIE 
+    luminescenceButton.whileHeld(new DrivingTheLine());
+
+    //Secondary Joystick Buttons
     Button skiButton = new JoystickButton(secondaryJoystick, 3);
     skiButton.whileHeld(new BasicMovement(Robot.skis, 0.5));
 

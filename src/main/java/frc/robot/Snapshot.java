@@ -12,7 +12,9 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Add your docs here.
+ *programming returns the greeting
+ we will
+ because I'm happy....
  */
 public class Snapshot {
     private static final int FPS = 15; //frames per second 
@@ -20,6 +22,13 @@ public class Snapshot {
     private static final int IMG_HEIGHT = 120;
     private static final int TELEOP_EXPOSURE = 15;
     private static UsbCamera camera1 = null;
+
+public enum WhichSensor {
+    lefty,
+    middley,
+    righty,
+    noney
+    }
     
 public static void cameraInit() {
     camera1 = CameraServer.getInstance().startAutomaticCapture(0);
@@ -28,4 +37,35 @@ public static void cameraInit() {
     camera1.setExposureManual(TELEOP_EXPOSURE);
     
     }
+
+
+
+public static WhichSensor getLineStatus() {
+    WhichSensor currentPosition; 
+
+    if(RobotMap.leftLightSensor.get()) {
+        currentPosition = WhichSensor.lefty;
+    }
+
+    else if(RobotMap.rightLightSensor.get()) {
+        currentPosition = WhichSensor.righty;
+    }
+    
+    else if(RobotMap.middleLightSensor.get()) {
+        currentPosition = WhichSensor.middley;
+    }
+
+    else {
+        currentPosition = WhichSensor.noney;
+    }
+
+    SmartDashboard.putBoolean("Left Sensor", RobotMap.leftLightSensor.get());
+    SmartDashboard.putBoolean("Right Sensor", RobotMap.rightLightSensor.get());
+    SmartDashboard.putBoolean("Middle Sensor", RobotMap.middleLightSensor.get());
+
+
+
+    return currentPosition;
+}
+
 }

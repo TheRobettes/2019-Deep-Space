@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -35,7 +36,19 @@ public class RobotMap {
   public static SpeedController hatch = new Spark (hatchPort);
   public static SpeedController skis = new Spark (skiPort);
   
+  //VRM
   public static DoubleSolenoid gaston = new DoubleSolenoid(gastonOpenPort, gastonClosedPort);
+
+  //DIO
+  public static int leftLightPort = 7;
+  public static int middleLightPort = 8;
+  public static int rightLightPort = 9;
+
+  //Currently Kimmie light sensors
+  public static DigitalInput leftLightSensor = new DigitalInput(leftLightPort);
+  public static DigitalInput middleLightSensor = new DigitalInput(middleLightPort);
+  public static DigitalInput rightLightSensor = new DigitalInput(rightLightPort);
+
 
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:
