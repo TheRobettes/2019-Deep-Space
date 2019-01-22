@@ -7,10 +7,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -40,14 +42,17 @@ public class RobotMap {
   public static DoubleSolenoid gaston = new DoubleSolenoid(gastonOpenPort, gastonClosedPort);
 
   //DIO
-  public static int leftLightPort = 7;
-  public static int middleLightPort = 8;
-  public static int rightLightPort = 9;
+  private static int leftLightPort = 7;
+  private static int middleLightPort = 8;
+  private  static int rightLightPort = 9;
 
   //Currently Kimmie light sensors
   public static DigitalInput leftLightSensor = new DigitalInput(leftLightPort);
   public static DigitalInput middleLightSensor = new DigitalInput(middleLightPort);
   public static DigitalInput rightLightSensor = new DigitalInput(rightLightPort);
+  
+  //current Kimmie gyroscope 
+  public static Gyro gyro = new ADXRS450_Gyro();
 
 
   // If you are using multiple modules, make sure to define both the port

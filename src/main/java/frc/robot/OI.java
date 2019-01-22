@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.BasicMovement;
+import frc.robot.commands.CompassDriving;
 import frc.robot.commands.DrivingTheLine;
 import frc.robot.commands.PistonMovement;
 
@@ -43,6 +44,13 @@ public class OI {
 
     Button retractbutton = new JoystickButton(secondaryJoystick, 7);
     retractbutton.whileHeld(new PistonMovement(Robot.gaston, PistonMovement.retract));
+
+    Button northButton = new JoystickButton(secondaryJoystick,11);
+    northButton.whileHeld(new CompassDriving(0));
+
+    Button westButton = new JoystickButton(secondaryJoystick, 4);
+    westButton.whileHeld(new CompassDriving(-90));
+    //TO DO: finish Maisie's gyro suggestion
   }
 
   // Joystick stick = new Joystick(port);

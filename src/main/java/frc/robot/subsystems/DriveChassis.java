@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
@@ -17,14 +18,19 @@ import frc.robot.commands.TeletubbyDrive;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class DriveChassis extends Subsystem {
+public abstract class DriveChassis extends PIDSubsystem {
   private DifferentialDrive driving = new DifferentialDrive(RobotMap.leftDrive, RobotMap.rightDrive);
+
+  public DriveChassis(String variableName, double P_Value, double I_Value, double D_Value){
+    super(variableName, P_Value, I_Value, D_Value);
+  }
 
  public void arcadeDrive(double speed, double rotation ){
      driving.arcadeDrive(speed, rotation); 
      //System.out.println("Speed:" + speed + " rotation:" + rotation);
 }
 
+  
 
   @Override
   public void initDefaultCommand() {
