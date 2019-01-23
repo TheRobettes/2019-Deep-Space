@@ -28,24 +28,24 @@ public class RobotMap {
   private static int leftDrivePort = 2;
   private static int rightDrivePort = 8;
   private static int hatchPort = 3;
-  private static int skiPort = 6;
   
   //Pneumatic solenoid numbers (VRM - Voltage Regulator Module)
   private static int gastonOpenPort = 1;
   private static int gastonClosedPort = 2; 
   private static int brakeOn = 3;
   private static int brakeOff = 4;
+  private static int skisExtend = 5;
 
   //currently kimmie speedcontrollers
   public static SpeedController leftDrive = new Spark(leftDrivePort);
   public static SpeedController rightDrive = new Spark(rightDrivePort);
   public static SpeedController hatch = new Spark (hatchPort);
-  public static SpeedController skis = new Spark (skiPort);
   
   //VRM
   public static DoubleSolenoid gaston = new DoubleSolenoid(gastonOpenPort, gastonClosedPort);
   public static DoubleSolenoid brake = new DoubleSolenoid(brakeOn, brakeOff);
-
+  public static DoubleSolenoid skis = new DoubleSolenoid(skisExtend , 0); //TODO: verify if this is a double or single
+  
   //DIO
   private static int leftLightPort = 7;
   private static int middleLightPort = 8;

@@ -29,7 +29,7 @@ import frc.robot.subsystems.PistonController;
 public class Robot extends TimedRobot {
   public static GyroPID driveChassis = new GyroPID();
   public static HatchLifter hatch = new HatchLifter();
-  public static BasicController skis = new BasicController(RobotMap.skis);
+  public static PistonController skis = new PistonController(RobotMap.skis);
   public static PistonController gaston = new PistonController(RobotMap.gaston);
   public static OI m_oi;
 
