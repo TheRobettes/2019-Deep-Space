@@ -26,8 +26,12 @@ public class HatchLifter extends PIDSubsystem {
    */
   public HatchLifter() {
     // Intert a subsystem name and PID values here
+<<<<<<< HEAD
     super("SubsystemName", 1, 2, 3); //TODO: figure out real values soon 
     
+=======
+    super("SubsystemName", 1, 2, 3); //TODO: Correct PID values
+>>>>>>> 857dfd34a025f0d9d59e7160cae39f69413e675e
     // Use these to get going:
     // setSetpoint() - Sets where the PID controller should move the system
     // to

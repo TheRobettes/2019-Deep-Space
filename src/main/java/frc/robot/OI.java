@@ -35,7 +35,7 @@ public class OI {
 
     //Secondary Joystick Buttons
     Button skiButton = new JoystickButton(secondaryJoystick, 3);
-    skiButton.whileHeld(new BasicMovement(Robot.skis, 0.5));
+    skiButton.whileHeld(new PistonMovement(Robot.skis, PistonMovement.extend));
 
     Button hatchButton = new JoystickButton(secondaryJoystick, 5);
     hatchButton.whenPressed(new MoveHatchLevel(0.5)); //TODO: rename command
