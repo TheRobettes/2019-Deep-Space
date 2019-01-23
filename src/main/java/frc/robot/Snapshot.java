@@ -11,11 +11,6 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- *programming returns the greeting
- we will
- because I'm happy....
- */
 public class Snapshot {
     private static final int FPS = 15; //frames per second 
     private static final int IMG_WIDTH = 160;
