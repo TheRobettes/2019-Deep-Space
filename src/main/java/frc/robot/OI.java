@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.BasicMovement;
 import frc.robot.commands.CompassDriving;
 import frc.robot.commands.DrivingTheLine;
+import frc.robot.commands.MoveHatchLevel;
 import frc.robot.commands.PistonMovement;
 
 /**
@@ -37,7 +38,7 @@ public class OI {
     skiButton.whileHeld(new BasicMovement(Robot.skis, 0.5));
 
     Button hatchButton = new JoystickButton(secondaryJoystick, 5);
-    hatchButton.whileHeld(new BasicMovement(Robot.hatch, 0.5));
+    hatchButton.whenPressed(new MoveHatchLevel(0.5)); //TODO: rename command
 
     Button extendbutton = new JoystickButton(secondaryJoystick, 6);
     extendbutton.whileHeld(new PistonMovement(Robot.gaston, PistonMovement.extend));

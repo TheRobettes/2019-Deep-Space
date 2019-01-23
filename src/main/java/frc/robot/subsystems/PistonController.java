@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -16,7 +17,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class PistonController extends Subsystem {
   private DoubleSolenoid pistonFun; 
-
+  private SpeedController motor;
+  
   public PistonController(DoubleSolenoid pistonFun) {
     this.pistonFun = pistonFun;
   }
@@ -36,4 +38,5 @@ public class PistonController extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
 }
