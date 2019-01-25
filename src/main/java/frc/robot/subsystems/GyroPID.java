@@ -14,9 +14,10 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class GyroPID extends DriveChassis { //TODO: figure out these numbers 
-  private static final double P_Value = 999;
-  private static final double I_Value = 998;
-  private static final double D_Value = 997;
+  private static final double P_Value = 0.02;
+  private static final double I_Value = 0.0;
+  private static final double D_Value = 0.1;
+  //TODO: finish tuning PID 
 
   public GyroPID() {
     // Inert a subsystem name and PID values here
@@ -61,6 +62,6 @@ public class GyroPID extends DriveChassis { //TODO: figure out these numbers
   protected void usePIDOutput(double rotation) {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
-    super.arcadeDrive(0.6, rotation);
+    super.arcadeDrive(0.45, rotation);
   }
 }
