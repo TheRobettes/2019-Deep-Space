@@ -13,10 +13,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.TeletubbyDrive;
-<<<<<<< HEAD
-=======
-import frc.robot.subsystems.BasicController;
->>>>>>> 0a9ab24528bcc40c8e53f24c889379b1fac57fb8
 import frc.robot.subsystems.GyroPID;
 import frc.robot.subsystems.HatchLifter;
 import frc.robot.subsystems.PistonController;
