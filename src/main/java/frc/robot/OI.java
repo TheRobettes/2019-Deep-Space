@@ -47,6 +47,7 @@ public class OI {
     //westButton
     buttonHold(secondaryJoystick, 4, new CompassDriving(-90));
   }
+<<<<<<< HEAD
     public void buttonHold (Joystick joystick, int buttonNumber, Command buttoncommand){
       Button button = new JoystickButton(joystick, buttonNumber);
       button.whileHeld(buttoncommand);
@@ -79,4 +80,6 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+=======
+>>>>>>> 0a9ab24528bcc40c8e53f24c889379b1fac57fb8
 }
