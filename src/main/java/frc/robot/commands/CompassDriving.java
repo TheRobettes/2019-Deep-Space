@@ -7,11 +7,8 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveChassis;
-import frc.robot.subsystems.GyroPID;
 
 public class CompassDriving extends Command {
   private double direction;

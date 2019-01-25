@@ -10,7 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.BasicMovement;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.CompassDriving;
 import frc.robot.commands.DrivingTheLine;
 import frc.robot.commands.MoveHatchLevel;
@@ -28,32 +28,35 @@ public class OI {
 
   public OI() {
     //Primary Joystick Buttons
-    Button illuminationButton = new JoystickButton(xBox, 5); //CHECK BUTTON WITH OLLIE 
-    illuminationButton.whileHeld(new DrivingTheLine());
-    Button luminescenceButton = new JoystickButton(xBox, 6); //CHECK BUTTON WITH OLLIE 
-    luminescenceButton.whileHeld(new DrivingTheLine());
+    //illuminationButton
+    buttonHold(xBox, 5, new DrivingTheLine());//CHECK BUTTON WITH OLLIE
+     //luminenceButton
+    buttonHold(xBox, 6, new DrivingTheLine());//CHECK BUTTON WITH OLLIE
 
     //Secondary Joystick Buttons
-    Button skiButton = new JoystickButton(secondaryJoystick, 3);
-    skiButton.whileHeld(new PistonMovement(Robot.skis, PistonMovement.extend));
-
-    Button hatchButton = new JoystickButton(secondaryJoystick, 5);
-    hatchButton.whenPressed(new MoveHatchLevel(0.5)); //TODO: rename command
-
-    Button extendbutton = new JoystickButton(secondaryJoystick, 6);
-    extendbutton.whileHeld(new PistonMovement(Robot.gaston, PistonMovement.extend));
-
-    Button retractbutton = new JoystickButton(secondaryJoystick, 7);
-    retractbutton.whileHeld(new PistonMovement(Robot.gaston, PistonMovement.retract));
-
-    Button northButton = new JoystickButton(secondaryJoystick,11);
-    northButton.whileHeld(new CompassDriving(0));
-
-    Button westButton = new JoystickButton(secondaryJoystick, 4);
-    westButton.whileHeld(new CompassDriving(-90));
-    //TO DO: finish Maisie's gyro suggestion
+    //skisButton
+    buttonHold(secondaryJoystick, 3, new PistonMovement(Robot.skis, PistonMovement.extend));
+    //hatchButton
+    buttonPress(secondaryJoystick, 5, new MoveHatchLevel(0.5));
+    //extendButton
+    buttonHold(secondaryJoystick, 6, new PistonMovement(Robot.gaston, PistonMovement.extend));
+    //retractButton
+    buttonHold(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract));
+    //northButton
+    buttonHold(secondaryJoystick, 11, new CompassDriving(0));
+    //westButton
+    buttonHold(secondaryJoystick, 4, new CompassDriving(-90));
   }
-
+    public void buttonHold (Joystick joystick, int buttonNumber, Command buttoncommand){
+      Button button = new JoystickButton(joystick, buttonNumber);
+      button.whileHeld(buttoncommand);
+      button.close();
+    }
+    public void buttonPress (Joystick joystick, int buttonNumber, Command buttoncommand){
+      Button button = new JoystickButton(joystick, buttonNumber);
+      button.whenPressed(buttoncommand);
+      button.close();
+    }
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
 
