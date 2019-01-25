@@ -47,39 +47,18 @@ public class OI {
     //westButton
     buttonHold(secondaryJoystick, 4, new CompassDriving(-90));
   }
-<<<<<<< HEAD
+    //condesed whileHeld into 1 function 
     public void buttonHold (Joystick joystick, int buttonNumber, Command buttoncommand){
       Button button = new JoystickButton(joystick, buttonNumber);
       button.whileHeld(buttoncommand);
       button.close();
     }
+
+    //condesing whenPressed buttons into 1 function 
     public void buttonPress (Joystick joystick, int buttonNumber, Command buttoncommand){
       Button button = new JoystickButton(joystick, buttonNumber);
       button.whenPressed(buttoncommand);
       button.close();
     }
-  // Joystick stick = new Joystick(port);
-  // Button button = new JoystickButton(stick, buttonNumber);
 
-  // There are a few additional built in buttons you can use. Additionally,
-  // by subclassing Button you can create custom triggers and bind those to
-  // commands the same as any other Button.
-
-  //// TRIGGERING COMMANDS WITH BUTTONS
-  // Once you have a button, it's trivial to bind it to a button in one of
-  // three ways:
-
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
-
-  // Run the command while the button is being held down and interrupt it once
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
-
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
-=======
->>>>>>> 0a9ab24528bcc40c8e53f24c889379b1fac57fb8
 }
