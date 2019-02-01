@@ -16,13 +16,12 @@ import frc.robot.commands.TeletubbyDrive;
 public abstract class DriveChassis extends PIDSubsystem {
   private DifferentialDrive driving = new DifferentialDrive(RobotMap.leftDrive, RobotMap.rightDrive);
 
-  public DriveChassis(String variableName, double P_Value, double I_Value, double D_Value){
-    super(variableName, P_Value, I_Value, D_Value);
+  public DriveChassis(String variableName, double gyro_P_Value, double gyro_I_Value, double gyro_D_Value){
+    super(variableName, gyro_P_Value, gyro_I_Value, gyro_D_Value);
+    driving.setExpiration(.5);
   }
-
  public void arcadeDrive(double speed, double rotation ){
      driving.arcadeDrive(speed, rotation); 
-     //System.out.println("Speed:" + speed + " rotation:" + rotation);
 }
 
   

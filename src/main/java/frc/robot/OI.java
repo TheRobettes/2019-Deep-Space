@@ -43,9 +43,10 @@ public class OI {
     //retractButton
     buttonHold(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract));
     //northButton
-    buttonHold(secondaryJoystick, 11, new CompassDriving(0));
+    buttonHold(secondaryJoystick, 11, new CompassDriving(0, 1.3));
     //westButton
-    buttonHold(secondaryJoystick, 4, new CompassDriving(-90));
+    buttonHold(secondaryJoystick, 4, new CompassDriving(-90, 2));
+
   }
     //condesed whileHeld into 1 function 
     public void buttonHold (Joystick joystick, int buttonNumber, Command buttoncommand){

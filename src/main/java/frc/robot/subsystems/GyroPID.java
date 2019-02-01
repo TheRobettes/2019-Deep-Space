@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
@@ -14,15 +16,18 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class GyroPID extends DriveChassis { //TODO: figure out these numbers 
-  private static final double P_Value = 0.02;
-  private static final double I_Value = 0.0;
-  private static final double D_Value = 0.1;
+  private static final double gyro_P_Value = 0.02;
+  private static final double gyro_I_Value = 0.0045;
+  private static final double gyro_D_Value = 0.2;
+  protected double speedPower = 0.0;
+  protected final Timer summerTime = new Timer();
   //TODO: finish tuning PID 
 
   public GyroPID() {
     // Inert a subsystem name and PID values here
-    super("Gyro", P_Value, I_Value, D_Value);
+    super("Gyro", gyro_P_Value, gyro_I_Value, gyro_D_Value);
     RobotMap.gyro.reset();
+    summerTime.start();
     /*
     p- line, if far away go fast, as gets closer go slower proportionally
     i- if it is too close the robot won't turn bceause of the p (too little rotation power)
@@ -37,7 +42,7 @@ public class GyroPID extends DriveChassis { //TODO: figure out these numbers
     
   }
 
-  public void compassDrive (double angle){
+  public void compassDrive (double angle, double speed){
     setSetpoint(angle);
     SmartDashboard.putNumber("Angle Desired" , angle); //the angle we want to go
 
@@ -46,10 +51,10 @@ public class GyroPID extends DriveChassis { //TODO: figure out these numbers
   /*
   There is no "initDefaultCommand" because the executed code is already defined for us in the super class
   */
-
+double currentAngle;
   @Override
   protected double returnPIDInput() {
-    double currentAngle = RobotMap.gyro.getAngle();
+    currentAngle = RobotMap.gyro.getAngle();
     SmartDashboard.putNumber("Current Angle Number" , currentAngle); //the direction we are going
     
     // Return your input value for the PID loop
@@ -57,11 +62,20 @@ public class GyroPID extends DriveChassis { //TODO: figure out these numbers
     // yourPot.getAverageVoltage() / kYourMaxVoltage;
     return currentAngle;
   }
-
+//long printFilterPID = 0;
   @Override
   protected void usePIDOutput(double rotation) {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
-    super.arcadeDrive(0.45, rotation);
-  }
+    super.arcadeDrive(speedPower, rotation);
+    SmartDashboard.putNumber("pidDrivePower", speedPower);
+    /*String gameTime = "" + summerTime.get();
+    //DriverStation.getInstance().getMatchTime();
+    //if (printFilterPID ++ %5 == 0 && Math.abs(rotation)>0.008 && Math.abs(rotation)!= 1.0)
+        
+    System.out.println(gameTime +  "\t pidSpeed: \t"  + speedPower + "(" + RobotMap.rightDriveEncoder.getRate() + ")"
+        //+ " rotation:" + rotation + "(" + currentAngle + ")"
+        );
+        */
+  }  
 }

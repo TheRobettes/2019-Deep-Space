@@ -54,9 +54,9 @@ public static WhichSensor getLineStatus() {
         currentPosition = WhichSensor.noney;
     }
 
-    SmartDashboard.putBoolean("Left Sensor", RobotMap.leftLightSensor.get());
+   /* SmartDashboard.putBoolean("Left Sensor", RobotMap.leftLightSensor.get());
     SmartDashboard.putBoolean("Right Sensor", RobotMap.rightLightSensor.get());
-    SmartDashboard.putBoolean("Middle Sensor", RobotMap.middleLightSensor.get());
+    SmartDashboard.putBoolean("Middle Sensor", RobotMap.middleLightSensor.get()); */
 
 
 

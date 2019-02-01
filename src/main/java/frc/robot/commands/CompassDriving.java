@@ -12,9 +12,11 @@ import frc.robot.Robot;
 
 public class CompassDriving extends Command {
   private double direction;
+  private double speed;
 
-  public CompassDriving(double direction) {
+  public CompassDriving(double direction, double speed) {
     this.direction = direction;
+    this.speed = speed;
     requires(Robot.driveChassis);
   }
 
@@ -27,7 +29,7 @@ public class CompassDriving extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveChassis.compassDrive(direction);
+    Robot.driveChassis.compassDrive(direction, speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.TeletubbyDrive;
+import frc.robot.subsystems.EncoderPID;
 import frc.robot.subsystems.GyroPID;
 import frc.robot.subsystems.HatchLifter;
 import frc.robot.subsystems.PistonController;
@@ -25,7 +26,7 @@ import frc.robot.subsystems.PistonController;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static GyroPID driveChassis = new GyroPID();
+  public static GyroPID driveChassis = new EncoderPID();
   public static HatchLifter hatch = new HatchLifter();
   public static PistonController skis = new PistonController(RobotMap.skis);
   public static PistonController gaston = new PistonController(RobotMap.gaston);
@@ -45,7 +46,7 @@ public class Robot extends TimedRobot {
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
     
-    Snapshot.cameraInit();
+    //Snapshot.cameraInit();
 
   }
 

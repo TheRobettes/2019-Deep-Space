@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -49,7 +50,9 @@ public class RobotMap {
   private static int leftLightPort = 7;
   private static int middleLightPort = 8;
   private  static int rightLightPort = 9;
-
+  private static int leftDriveEncoderPort = 0;
+  private static int rightDriveEncoderPort = 2;
+  
   //Analog
   private static int hatchPotentialPort = 0;
 
@@ -57,6 +60,8 @@ public class RobotMap {
   public static DigitalInput leftLightSensor = new DigitalInput(leftLightPort);
   public static DigitalInput middleLightSensor = new DigitalInput(middleLightPort);
   public static DigitalInput rightLightSensor = new DigitalInput(rightLightPort);
+  public static Encoder leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
+  public static Encoder rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
 
   public static AnalogPotentiometer hatchpotential = new AnalogPotentiometer(hatchPotentialPort);
   
