@@ -47,8 +47,10 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
     }
       SmartDashboard.putNumber("Current Speed" , currentSpeed);
 
-      if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
-      || (previousAcceleration > 0 && currentAcceleration < 0)){ //when speeding up to speeding down 
+      /*if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
+      || (previousAcceleration > 0 && currentAcceleration < 0)) //when speeding up to speeding down
+      */
+      {
          String gameTime = "" + summerTime.get(); 
          System.out.println(gameTime +  "\t pidSpeed: \t"  + speedPower + "(" + currentSpeed + ")  "
          + "rotation " + rotationPower + " Angle offset (" + angleOffset + ") ");
@@ -94,10 +96,10 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
     }
    
     @Override
-    public void compassDrive (double angle, double speed){
+    public void compassDrive (double speed, double angle){
       this.encoderPID.setSetpoint(speed);
       SmartDashboard.putNumber("Speed Desired" , speed); //the speed we want to go
-      super.compassDrive(angle, speed);
+      super.compassDrive(speed, angle);
 
       double currentDistance = RobotMap.rightDriveEncoder.getDistance();
       SmartDashboard.putNumber("Current Distance" , currentDistance);

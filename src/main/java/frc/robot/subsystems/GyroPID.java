@@ -44,7 +44,7 @@ public class GyroPID extends DriveChassis { //TODO: figure out these numbers
     
   }
 
-  public void compassDrive (double angle, double speed){
+  public void compassDrive (double speed, double angle){
     setSetpoint(angle);
     SmartDashboard.putNumber("Angle Desired" , angle); //the angle we want to go
 
