@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class CompassDriving extends Command {
-  private double direction;
-  private double speed;
+  protected double direction;
+  protected double speed;
   public static final int noGyro = -1;
 
   public CompassDriving(double direction, double speed) {
@@ -30,7 +30,7 @@ public class CompassDriving extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveChassis.compassDrive(direction, speed);
+    Robot.driveChassis.compassDrive(speed, direction);
   }
 
   // Make this return true when this Command no longer needs to run execute()

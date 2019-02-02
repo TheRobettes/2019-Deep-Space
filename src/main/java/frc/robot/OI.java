@@ -29,9 +29,12 @@ public class OI {
   public OI() {
     //Primary Joystick Buttons
     //illuminationButton
-    buttonHold(xBox, 5, new DrivingTheLine(-90, 2.5));//CHECK BUTTON WITH OLLIE
+    buttonHold(xBox, 5, new DrivingTheLine(0, 1.5));//CHECK BUTTON WITH OLLIE
      //luminenceButton
-    buttonHold(xBox, 6, new DrivingTheLine(90, 1.5));//CHECK BUTTON WITH OLLIE
+    buttonHold(xBox, 6, new DrivingTheLine(180, 1.5));//CHECK BUTTON WITH OLLIE
+    //drive without gyro on the line
+    buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
+
 
     //Secondary Joystick Buttons
     //skisButton
@@ -46,9 +49,6 @@ public class OI {
     buttonHold(secondaryJoystick, 11, new CompassDriving(0, 1.3));
     //westButton
     buttonHold(secondaryJoystick, 4, new CompassDriving(-90, 2));
-
-    //drive without gyro on the line
-    buttonHold(secondaryJoystick, 2, new CompassDriving(CompassDriving.noGyro, 2));
 
   }
     //condesed whileHeld into 1 function 
