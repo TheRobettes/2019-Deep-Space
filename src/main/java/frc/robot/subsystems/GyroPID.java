@@ -16,10 +16,12 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class GyroPID extends DriveChassis { //TODO: figure out these numbers 
-  private static final double gyro_P_Value = 0.02;
+  private static final double gyro_P_Value = 0.065;
   private static final double gyro_I_Value = 0.0045;
   private static final double gyro_D_Value = 0.2;
   protected double speedPower = 0.0;
+  protected double rotationPower = 0.0;
+  protected double angleOffset = 0.0;
   protected final Timer summerTime = new Timer();
   //TODO: finish tuning PID 
 
@@ -56,6 +58,7 @@ double currentAngle;
   protected double returnPIDInput() {
     currentAngle = RobotMap.gyro.getAngle();
     SmartDashboard.putNumber("Current Angle Number" , currentAngle); //the direction we are going
+    this.angleOffset = getSetpoint() - currentAngle; //how many degrees are we off target?
     
     // Return your input value for the PID loop
     // e.g. a sensor, like a potentiometer:
@@ -67,6 +70,7 @@ double currentAngle;
   protected void usePIDOutput(double rotation) {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
+    this.rotationPower = rotation;
     super.arcadeDrive(speedPower, rotation);
     SmartDashboard.putNumber("pidDrivePower", speedPower);
     /*String gameTime = "" + summerTime.get();

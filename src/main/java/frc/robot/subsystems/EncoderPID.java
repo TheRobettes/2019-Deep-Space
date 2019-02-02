@@ -22,11 +22,11 @@ import frc.robot.RobotMap;
 public class EncoderPID extends GyroPID {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-private static final double ENCODER_P_VALUE = 0.025;
+private static final double ENCODER_P_VALUE = 0.010;
 private static final double ENCODER_I_VALUE = 0.0;
 private static final double ENCODER_D_VALUE = 0.5;
 private static final boolean temporaryInputHack = true;
-private static final boolean temporaryOutputHack = false;
+private static final boolean temporaryOutputHack = true;
 private double previousSpeed = 0;
 private double previousAcceleration = 0;
 private final double maxAccel = 0.5; 
@@ -50,7 +50,8 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
       if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
       || (previousAcceleration > 0 && currentAcceleration < 0)){ //when speeding up to speeding down 
          String gameTime = "" + summerTime.get(); 
-         System.out.println(gameTime +  "\t pidSpeed: \t"  + speedPower + "(" + currentSpeed + ")");
+         System.out.println(gameTime +  "\t pidSpeed: \t"  + speedPower + "(" + currentSpeed + ")  "
+         + "rotation " + rotationPower + " Angle offset (" + angleOffset + ") ");
       }
 
       previousAcceleration = currentAcceleration;
@@ -88,7 +89,7 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
    
     public void pidSpeedCorrection(double PIDOutput){
       speedPower = PIDOutput;
-      if (PIDOutput < 0.4 && temporaryOutputHack)
+      if (Math.abs(this.angleOffset) > 15.0 && temporaryOutputHack)
         speedPower = 0.4; //TODO: trying to prevent stuttering at "initialize" reduce or eliminate later
     }
    
