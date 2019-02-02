@@ -14,6 +14,7 @@ public class MoveHatchLevel extends Command {
   private double targetHeight;
 
   public MoveHatchLevel(double targetHeight) {
+    requires(Robot.hatch);
     this.targetHeight = targetHeight;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
