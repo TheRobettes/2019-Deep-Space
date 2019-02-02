@@ -13,6 +13,7 @@ import frc.robot.Robot;
 public class CompassDriving extends Command {
   private double direction;
   private double speed;
+  public static final int noGyro = -1;
 
   public CompassDriving(double direction, double speed) {
     this.direction = direction;

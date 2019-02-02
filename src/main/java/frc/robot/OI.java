@@ -47,6 +47,9 @@ public class OI {
     //westButton
     buttonHold(secondaryJoystick, 4, new CompassDriving(-90, 2));
 
+    //drive without gyro on the line
+    buttonHold(secondaryJoystick, 2, new CompassDriving(CompassDriving.noGyro, 2));
+
   }
     //condesed whileHeld into 1 function 
     public void buttonHold (Joystick joystick, int buttonNumber, Command buttoncommand){
