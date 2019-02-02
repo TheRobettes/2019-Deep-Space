@@ -29,9 +29,9 @@ public class OI {
   public OI() {
     //Primary Joystick Buttons
     //illuminationButton
-    buttonHold(xBox, 5, new DrivingTheLine());//CHECK BUTTON WITH OLLIE
+    buttonHold(xBox, 5, new DrivingTheLine(-90, 2.5));//CHECK BUTTON WITH OLLIE
      //luminenceButton
-    buttonHold(xBox, 6, new DrivingTheLine());//CHECK BUTTON WITH OLLIE
+    buttonHold(xBox, 6, new DrivingTheLine(90, 1.5));//CHECK BUTTON WITH OLLIE
 
     //Secondary Joystick Buttons
     //skisButton

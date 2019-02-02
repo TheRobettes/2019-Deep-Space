@@ -11,23 +11,17 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.Snapshot;
 
-public class DrivingTheLine extends Command {
-  public DrivingTheLine() {
+public class DrivingTheLine extends CompassDriving {
+  public DrivingTheLine( double direction, double speed) {
+    super(direction, speed);
     // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.driveChassis);
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     double speed = 0;
-    double rotation = 0;
+    double rotation = 0; //TODO: super class has protected target direction- change to +/- 5 that target direction
 
     if(Snapshot.getLineStatus() == Snapshot.WhichSensor.lefty) {
       speed = 0.45; //0.5
@@ -43,25 +37,9 @@ public class DrivingTheLine extends Command {
       speed = 0.45; //0.5
     }
 
-    Robot.driveChassis.arcadeDrive(speed, rotation);
+    Robot.driveChassis.compassDrive(speed, rotation); //TODO: make speed ft per sec- convert later 
 
     System.out.println("Speed:" + speed + " rotation:" + rotation);
   }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
 }
