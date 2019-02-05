@@ -75,13 +75,17 @@ public class EnVISIONing extends Command {
   
   //TODO: likely will have to be adjusted by a this.-targetheading-
   double currentHeading = Robot.driveChassis.getDirection();
-
-  double expectedOffset = driveRatePct * Math.sin(Math.toRadians(currentHeading));
+  double distancePct = TargetAnalysis.targetWidthPct;
+  double expectedOffset = distancePct * Math.sin(Math.toRadians(currentHeading));
 
   double headingCorrection = 0; //TODO: turning correction will be based on a factor of currentHeading and expectedOffset. 
   turningDirection += headingCorrection;
 
-  driveRate = targetOffset - expectedOffset;
+  double driveRatePct = distancePct; 
+
+  if(Math.abs(headingCorrection) > 10){
+    driveRatePct = 0;
+  }
   
   driveRate = driveRatePct * SPEED_LIMIT; 
  } 
