@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -24,53 +27,60 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  */
 public class RobotMap {
 
-  //currently kimmie port numbers (PWM - Roborio/PWM Ports)
-  private static int leftDrivePort = 2;
-  private static int rightDrivePort = 8;
-  private static int hatchPort = 3;
-  
-  //Pneumatic solenoid numbers (VRM - Voltage Regulator Module)
-  private static int gastonOpenPort = 1;
-  private static int gastonClosedPort = 2; 
-  private static int brakeOn = 3;
-  private static int brakeOff = 4;
-  private static int skisExtend = 5;
+ 
 
   //currently kimmie speedcontrollers
-  public static SpeedController leftDrive = new Spark(leftDrivePort);
-  public static SpeedController rightDrive = new Spark(rightDrivePort);
-  public static SpeedController hatch = new Spark (hatchPort);
+  public static SpeedController leftDrive;
+  public static SpeedController rightDrive;
+  public static SpeedController hatch;
   
   //VRM
-  public static DoubleSolenoid gaston = new DoubleSolenoid(gastonOpenPort, gastonClosedPort);
-  public static DoubleSolenoid brake = new DoubleSolenoid(brakeOn, brakeOff);
-  public static DoubleSolenoid skis = new DoubleSolenoid(skisExtend , 0); //TODO: verify if this is a double or single
+  public static DoubleSolenoid gaston = null;
+  public static DoubleSolenoid brake = null;
+  public static DoubleSolenoid skis = null;
   
-  //DIO
-  private static int leftLightPort = 7;
-  private static int middleLightPort = 8;
-  private  static int rightLightPort = 9;
-  private static int leftDriveEncoderPort = 0;
-  private static int rightDriveEncoderPort = 2;
   
   //Analog
   private static int hatchPotentialPort = 0;
 
   //Currently Kimmie light sensors
-  public static DigitalInput leftLightSensor = new DigitalInput(leftLightPort);
-  public static DigitalInput middleLightSensor = new DigitalInput(middleLightPort);
-  public static DigitalInput rightLightSensor = new DigitalInput(rightLightPort);
-  public static Encoder leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
-  public static Encoder rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
+  public static DigitalInput leftLightSensor = null;
+  public static DigitalInput middleLightSensor = null;
+  public static DigitalInput rightLightSensor = null;
+  public static Encoder leftDriveEncoder = null;
+  public static Encoder rightDriveEncoder = null;
 
   public static AnalogPotentiometer hatchpotential = new AnalogPotentiometer(hatchPotentialPort);
   
   //current Kimmie gyroscope 
   public static Gyro gyro = new ADXRS450_Gyro();
 
+  public static final String KIMMIE = "Kimmie";
+  public RobotMap(String robotID){
+    if (robotID.equals (KIMMIE)){
+      leftDrive = new Spark(2);
+      rightDrive = new Spark(8);
+      hatch = new Spark (3);
 
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
-  // public static int rangefinderPort = 1;
-  // public static int rangefinderModule = 1;
+      //DIO
+      leftLightSensor = new DigitalInput(7);
+      middleLightSensor = new DigitalInput(8);
+      rightLightSensor = new DigitalInput(9);
+
+      int leftDriveEncoderPort = 0, rightDriveEncoderPort = 2;
+      leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
+      rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
+
+     //pneumatics
+      gaston = new DoubleSolenoid(0, 1);
+      brake = new DoubleSolenoid(2, 3);
+      skis = new DoubleSolenoid(4 , 5);
+    }
+    else 
+    {
+      leftDrive = new CANSparkMax(4,MotorType.kBrushless);
+      rightDrive = new CANSparkMax(6,MotorType.kBrushless);
+      hatch = new CANSparkMax (2,MotorType.kBrushless);
+    }
+  }
 }

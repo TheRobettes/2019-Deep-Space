@@ -28,12 +28,14 @@ public class OI {
 
   public OI() {
     //Primary Joystick Buttons
-    //illuminationButton
-    buttonHold(xBox, 5, new DrivingTheLine(0, 1.5));//CHECK BUTTON WITH OLLIE
-     //luminenceButton
-    buttonHold(xBox, 6, new DrivingTheLine(180, 1.5));//CHECK BUTTON WITH OLLIE
-    //drive without gyro on the line
-    buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
+    if(RobotMap.middleLightSensor!=null){
+      //illuminationButton
+      buttonHold(xBox, 5, new DrivingTheLine(0, 1.5));//CHECK BUTTON WITH OLLIE
+      //luminenceButton
+      buttonHold(xBox, 6, new DrivingTheLine(180, 1.5));//CHECK BUTTON WITH OLLIE
+      //drive without gyro on the line
+      buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
+  }
 
 
     //Secondary Joystick Buttons
