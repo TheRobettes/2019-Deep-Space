@@ -17,6 +17,7 @@ import frc.robot.subsystems.EncoderPID;
 import frc.robot.subsystems.GyroPID;
 import frc.robot.subsystems.HatchLifter;
 import frc.robot.subsystems.PistonController;
+import frc.robot.vision.Snapshot;
 
 /**
  * The VM is configured to automatically run this class, and to call the

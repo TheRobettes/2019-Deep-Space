@@ -9,8 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.Snapshot;
-import frc.robot.Snapshot.WhichSensor;
+import frc.robot.vision.Snapshot;
+import frc.robot.vision.Snapshot.WhichSensor;
 
 public class DrivingTheLine extends CompassDriving {
   private Snapshot.WhichSensor previousState = WhichSensor.noney;
@@ -60,7 +60,7 @@ public class DrivingTheLine extends CompassDriving {
 
     if(currentSensor == Snapshot.WhichSensor.lefty) {
       lineDrivingSpeed = 0.75*this.speed; //go slower until we're back to middle
-      turningDirection -= 5; //add 5 degree correction to hatch angle
+      turningDirection -= 5; //subtract 5 degree correction to hatch angle
     }
 
     if(currentSensor == Snapshot.WhichSensor.righty) {
