@@ -7,12 +7,11 @@
 
 package frc.robot.vision;
 
-import java.awt.Image;
-import java.awt.Point;
 import java.util.ArrayList;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -101,8 +100,7 @@ public static void processImage() {
         for(int x = 0; x < c; x++) {
             Rect r = Imgproc.boundingRect(contours.get(x));
             rectangles.add(r);
-            //TODO: Fix this syntax
-           // Imgproc.rectangle(image, new Point(r.x, r.y), new Point(r.x+r.width, r.y+r.height), WHITE, 5);       
+            Imgproc.rectangle(image, new Point(r.x, r.y), new Point(r.x+r.width, r.y+r.height), WHITE, 5);       
         }
 
         if(c != lastCount && isVisionCommandEnabled) {
