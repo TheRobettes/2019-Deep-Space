@@ -7,9 +7,9 @@
 
 package frc.robot.commands;
 
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.EncoderPID;
 import frc.robot.vision.Snapshot;
 import frc.robot.vision.TargetAnalysis;
 
@@ -36,6 +36,7 @@ public class EnVISIONing extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Snapshot.isVisionCommandEnabled = true;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -51,7 +52,14 @@ public class EnVISIONing extends Command {
       if(isTracking()) {  
         calcDriveRates();
       }
+
+      else {
+        System.out.println("Image Updated Without Contours");
+      }
     
+    driveRate = 0;
+    turningDirection = 0;
+
     if(imageCycles++ < MAX_IMAGE_CYCLES) {
         Robot.driveChassis.compassDrive(driveRate, turningDirection); //what happened to driveRate?
     }
@@ -88,6 +96,11 @@ public class EnVISIONing extends Command {
   }
   
   driveRate = driveRatePct * SPEED_LIMIT; 
+
+  System.out.println("TARGET WIDTH: " + TargetAnalysis.targetWidthPct 
+  + "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
+  + "Drive Rate: " + driveRate + "; Turning Direction: " + turningDirection);
+  
  } 
 
  protected double calcDriveRatePct(){
@@ -107,11 +120,13 @@ public class EnVISIONing extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Snapshot.isVisionCommandEnabled = false;
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

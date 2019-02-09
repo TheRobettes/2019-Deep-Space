@@ -21,7 +21,6 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class Snapshot {
@@ -32,13 +31,13 @@ public class Snapshot {
     private static final int VISION_EXPOSURE = 4; //TODO: test exposure 
     private static UsbCamera camera1 = null;
     private static CvSink cvSink1 = null;
-    private static GripPipeline pipeline;
+    private static GripPipeline pipeline = new GripPipeline();
     public static boolean isImageReady = false;
     public static boolean isVisionCommandEnabled = false;
     private static ArrayList<Rect> rectangles = new ArrayList<Rect>();
     static final Scalar WHITE = new Scalar(255, 255, 255);
 
-    private static int lastCount = 0;
+    private static int lastCount = -1;
 
     private static final Mat image = new Mat();
 
@@ -53,7 +52,7 @@ public static void cameraInit() {
     camera1 = CameraServer.getInstance().startAutomaticCapture(0);
     camera1.setResolution(IMG_WIDTH, IMG_HEIGHT);
     camera1.setFPS(FPS);
-    camera1.setExposureManual(VISION_EXPOSURE); //TODO
+    //camera1.setExposureManual(VISION_EXPOSURE); //TODO
     cvSink1 = CameraServer.getInstance().getVideo(camera1);
     cvSink1.setEnabled(true);
 

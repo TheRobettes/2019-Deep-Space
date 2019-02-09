@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.CompassDriving;
 import frc.robot.commands.DrivingTheLine;
+import frc.robot.commands.EnVISIONing;
 import frc.robot.commands.MoveHatchLevel;
 import frc.robot.commands.PistonMovement;
 
@@ -35,6 +36,8 @@ public class OI {
       buttonHold(xBox, 6, new DrivingTheLine(180, 1.5));//CHECK BUTTON WITH OLLIE
       //drive without gyro on the line
       buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
+
+      buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
   }
 
 

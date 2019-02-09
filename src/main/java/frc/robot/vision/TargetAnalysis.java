@@ -23,6 +23,7 @@ public class TargetAnalysis {
     public static final long cameraCenterX = Snapshot.IMG_WIDTH/2;
 
     public static void updateValues() {
+
         Rect targetTheFirst = null;
         Rect targetTheSecond = null;
 
@@ -33,13 +34,25 @@ public class TargetAnalysis {
         for(int x = 0; x < count; x++) {
             Rect r = rectangles.get(x);
 
-            double aspectRatio = (double) r.width/r.height;
-            if(!foundTarget && aspectRatio > 1.75) {
-                foundTarget = true;
-                targetWidthPct = 100.0 * r.width / Snapshot.IMG_WIDTH;
-                long rectCenter = r.x + (r.width/2);
-                targetXOffset = (long)( 100.0 * (cameraCenterX - rectCenter)) / Snapshot.IMG_WIDTH;
+            if(targetTheFirst == null) {
+                targetTheFirst = r;
             }
+
+            else if(targetTheSecond == null) {
+                targetTheSecond = r;
+            }
+        }
+
+        if(targetTheSecond != null) {
+            foundTarget = true;
+            double innerEdgeLeftContour = targetTheFirst.x + targetTheFirst.width; 
+            double innerEdgeRightContour = targetTheSecond.x;
+
+            //inner right - inner left = space between contours
+            targetWidthPct = 100.0 * (innerEdgeRightContour - innerEdgeLeftContour) / Snapshot.IMG_WIDTH;
+
+            double rectCenter = (innerEdgeRightContour - innerEdgeLeftContour)/2;
+            targetXOffset = (long)( 100.0 * (cameraCenterX - rectCenter)) / Snapshot.IMG_WIDTH;
         }
 
 
