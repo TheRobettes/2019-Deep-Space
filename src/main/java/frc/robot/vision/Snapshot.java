@@ -52,7 +52,7 @@ public static void cameraInit() {
     camera1 = CameraServer.getInstance().startAutomaticCapture(0);
     camera1.setResolution(IMG_WIDTH, IMG_HEIGHT);
     camera1.setFPS(FPS);
-    //camera1.setExposureManual(VISION_EXPOSURE); //TODO
+    camera1.setExposureManual(VISION_EXPOSURE); //TODO
     cvSink1 = CameraServer.getInstance().getVideo(camera1);
     cvSink1.setEnabled(true);
 

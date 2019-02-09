@@ -21,6 +21,8 @@ public class EnVISIONing extends Command {
   private static boolean shoppingAtTarget = false;
   private static boolean missedTarget = false;
   private static final double SPEED_LIMIT = 4;
+  private static final double MINIMUM_SPEED = 1;
+  private static final double APPROACH_SPEED = (SPEED_LIMIT + MINIMUM_SPEED) / 2;
   private static double turningDirection;
   private static double direction;
 
@@ -81,26 +83,43 @@ public class EnVISIONing extends Command {
     }
   }
   
+  //distance: 1.2083 = 66.25% width; distance: 5.667 = 13.125%
+  double distance = (-0.0845*TargetAnalysis.targetWidthPct) + 6.776; 
+
   //TODO: likely will have to be adjusted by a this.-targetheading-
   double currentHeading = Robot.driveChassis.getDirection();
-  double distancePct = TargetAnalysis.targetWidthPct;
-  double expectedOffset = distancePct * Math.sin(Math.toRadians(currentHeading));
+  double expectedOffset = distance * Math.sin(Math.toRadians(currentHeading));
+  double lateralOffset = expectedOffset - TargetAnalysis.targetXOffset; //how far is the robot from the line
 
-  double headingCorrection = 0; //TODO: turning correction will be based on a factor of currentHeading and expectedOffset. 
-  turningDirection += headingCorrection;
+  if(Math.abs(lateralOffset) > 20) { //TODO: check numbers
+    //result actions for tacking (spin without movement)
+    turningDirection += Math.copySign(20, lateralOffset); //plus or minus 20 based on direction of lateralOffset
+    driveRate = (Math.abs(turningDirection - currentHeading) < 5)? APPROACH_SPEED : 0;
 
-  double driveRatePct = distancePct; 
-
-  if(Math.abs(headingCorrection) > 10){
-    driveRatePct = 0;
+    //return; if this if statement is executed, don't do anything else in the funtion
   }
-  
-  driveRate = driveRatePct * SPEED_LIMIT; 
 
-  System.out.println("TARGET WIDTH: " + TargetAnalysis.targetWidthPct 
+  else {
+    double headingCorrection = 0; //TODO: turning correction will be based on a factor of currentHeading and expectedOffset. 
+    turningDirection += headingCorrection;
+
+    double driveRatePct = distance; 
+
+    //want our vision to see where the targets are on our image
+
+   if(Math.abs(headingCorrection) > 10){
+     driveRatePct = 0;
+      //i want you to turn
+   }
+  
+    driveRate = driveRatePct * SPEED_LIMIT; 
+    }
+
+  System.out.println("DISTANCE: " + distance 
   + "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
   + "Drive Rate: " + driveRate + "; Turning Direction: " + turningDirection);
-  
+
+
  } 
 
  protected double calcDriveRatePct(){

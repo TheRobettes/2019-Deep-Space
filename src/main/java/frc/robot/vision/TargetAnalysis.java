@@ -48,6 +48,17 @@ public class TargetAnalysis {
             double innerEdgeLeftContour = targetTheFirst.x + targetTheFirst.width; 
             double innerEdgeRightContour = targetTheSecond.x;
 
+            //System.out.println("INNER LEFT EDGE: " + innerEdgeLeftContour + " INNER RIGHT EDGE: " + innerEdgeRightContour);
+
+
+            if (innerEdgeRightContour < innerEdgeLeftContour) {
+                innerEdgeLeftContour = targetTheSecond.x + targetTheSecond.width;
+                innerEdgeRightContour = targetTheFirst.x;
+                //System.out.println("     INNER LEFT EDGE: " + innerEdgeLeftContour + " INNER RIGHT EDGE: " + innerEdgeRightContour);
+
+            }
+
+
             //inner right - inner left = space between contours
             targetWidthPct = 100.0 * (innerEdgeRightContour - innerEdgeLeftContour) / Snapshot.IMG_WIDTH;
 
