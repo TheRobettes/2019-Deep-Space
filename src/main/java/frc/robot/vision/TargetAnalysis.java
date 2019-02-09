@@ -62,10 +62,9 @@ public class TargetAnalysis {
             //inner right - inner left = space between contours
             targetWidthPct = 100.0 * (innerEdgeRightContour - innerEdgeLeftContour) / Snapshot.IMG_WIDTH;
 
-            double rectCenter = (innerEdgeRightContour - innerEdgeLeftContour)/2;
-            targetXOffset = (long)( 100.0 * (cameraCenterX - rectCenter)) / Snapshot.IMG_WIDTH;
+            double gapCenter = (innerEdgeRightContour + innerEdgeLeftContour)/2;
+            targetXOffset = (long)( 100.0 * (gapCenter - cameraCenterX)) / Snapshot.IMG_WIDTH;
         }
-
 
     }
 
