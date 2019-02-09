@@ -28,7 +28,7 @@ public class Snapshot {
     public static final int IMG_WIDTH = 160;
     public static final int IMG_HEIGHT = 120;
     private static final int TELEOP_EXPOSURE = 15;
-    private static final int VISION_EXPOSURE = 4; //TODO: test exposure 
+    public static int VISION_EXPOSURE = (RobotMap.isVictoria())?15:4; //TODO: test exposure 
     private static UsbCamera camera1 = null;
     private static CvSink cvSink1 = null;
     private static GripPipeline pipeline = new GripPipeline();
@@ -52,7 +52,7 @@ public static void cameraInit() {
     camera1 = CameraServer.getInstance().startAutomaticCapture(0);
     camera1.setResolution(IMG_WIDTH, IMG_HEIGHT);
     camera1.setFPS(FPS);
-    camera1.setExposureManual(VISION_EXPOSURE); //TODO
+    camera1.setExposureManual(VISION_EXPOSURE); 
     cvSink1 = CameraServer.getInstance().getVideo(camera1);
     cvSink1.setEnabled(true);
 

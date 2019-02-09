@@ -31,7 +31,6 @@ public class TeletubbyDrive extends Command {
   protected void execute() {
     Robot.driveChassis.arcadeDrive(-OI.xBox.getY(), OI.xBox.getRawAxis(4));
 
-    Snapshot.getLineStatus();
   }
 
   // Make this return true when this Command no longer needs to run execute()

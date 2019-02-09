@@ -29,7 +29,7 @@ public class OI {
 
   public OI() {
     //Primary Joystick Buttons
-    if(RobotMap.middleLightSensor!=null){
+    if(RobotMap.isKimmie()){
       //illuminationButton
       buttonHold(xBox, 5, new DrivingTheLine(0, 1.5));//CHECK BUTTON WITH OLLIE
       //luminenceButton
@@ -37,9 +37,9 @@ public class OI {
       //drive without gyro on the line
       buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
 
-      buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
+      
   }
-
+  buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
 
     //Secondary Joystick Buttons
     //skisButton
