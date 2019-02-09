@@ -115,11 +115,10 @@ public class EnVISIONing extends Command {
     driveRate = driveRatePct * SPEED_LIMIT; 
     }
 
-  System.out.println("DISTANCE: " + distance 
-  + "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
-  + "Drive Rate: " + driveRate + "; Turning Direction: " + turningDirection);
-
-
+    String visionMessage = " DISTANCE: " + distance 
+    + "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
+    + " Drive Rate: " + driveRate + "; Turning Direction: " + turningDirection;
+  Robot.statusMessage(visionMessage);
  } 
 
  protected double calcDriveRatePct(){

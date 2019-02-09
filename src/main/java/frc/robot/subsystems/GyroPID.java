@@ -22,14 +22,12 @@ public class GyroPID extends DriveChassis { //TODO: figure out these numbers
   protected double speedPower = 0.0;
   protected double rotationPower = 0.0;
   protected double angleOffset = 0.0;
-  protected final Timer summerTime = new Timer();
   //TODO: finish tuning PID 
 
   public GyroPID() {
     // Inert a subsystem name and PID values here
     super("Gyro", gyro_P_Value, gyro_I_Value, gyro_D_Value);
     RobotMap.gyro.reset();
-    summerTime.start();
     /*
     p- line, if far away go fast, as gets closer go slower proportionally
     i- if it is too close the robot won't turn bceause of the p (too little rotation power)

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -50,8 +51,17 @@ public class Robot extends TimedRobot {
     
     Snapshot.cameraInit();
 
+    summerTime.start();
   }
+  protected static final Timer summerTime = new Timer();
+  public static void statusMessage(String message) {
+    String gameTimeMessage = "" + summerTime.get() + " " + message; 
 
+    //we want to keep digit.digit and strip away any extra digits after that
+    String formatedMessage = gameTimeMessage.replaceAll("(\\d[.]\\d)\\d+", "$1");
+
+    System.out.println(formatedMessage);
+  }
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,

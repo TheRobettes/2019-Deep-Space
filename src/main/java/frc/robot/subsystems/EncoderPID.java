@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 
@@ -51,9 +52,9 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
       || (previousAcceleration > 0 && currentAcceleration < 0)) //when speeding up to speeding down
       */
       {
-         String gameTime = "" + summerTime.get(); 
-         System.out.println(gameTime +  "\t pidSpeed: \t"  + speedPower + "(" + currentSpeed + ")  "
-         + "rotation " + rotationPower + " Angle offset (" + angleOffset + ") ");
+         String encoderMessage = "\t pidSpeed: \t"  + speedPower + "(" + currentSpeed + ")  "
+         + "rotation " + rotationPower + " Angle offset (" + angleOffset + ") ";
+         Robot.statusMessage(encoderMessage);
       }
 
       previousAcceleration = currentAcceleration;
