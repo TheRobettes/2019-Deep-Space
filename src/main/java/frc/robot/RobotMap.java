@@ -7,9 +7,8 @@
 
 package frc.robot;
 
-/*import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-TODO: find and fix problem*/
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -108,10 +107,10 @@ public class RobotMap {
 
     else 
     {
-     /* leftDrive = new CANSparkMax(4,MotorType.kBrushless);
+      leftDrive = new CANSparkMax(4,MotorType.kBrushless);
       rightDrive = new CANSparkMax(6,MotorType.kBrushless);
       hatch = new CANSparkMax (2,MotorType.kBrushless);
-    */}
+    }
   }
   public static boolean isKimmie(){
     return ISKIMMIE;
