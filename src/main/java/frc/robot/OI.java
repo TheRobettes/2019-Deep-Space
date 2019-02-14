@@ -28,6 +28,9 @@ public class OI {
   public static Joystick secondaryJoystick = new Joystick(1);
 
   public OI() {
+
+    buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
+
     //Primary Joystick Buttons
     if(RobotMap.isKimmie()){
       //illuminationButton
@@ -39,7 +42,9 @@ public class OI {
 
       
   }
-  buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
+  else if( ! RobotMap.isVictoria()) {
+
+  
 
     //Secondary Joystick Buttons
     //skisButton
@@ -50,11 +55,11 @@ public class OI {
     buttonHold(secondaryJoystick, 6, new PistonMovement(Robot.gaston, PistonMovement.extend));
     //retractButton
     buttonHold(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract));
+  }
     //northButton
     buttonHold(secondaryJoystick, 11, new CompassDriving(0, 1.3));
     //westButton
     buttonHold(secondaryJoystick, 4, new CompassDriving(-90, 2));
-
   }
     //condesed whileHeld into 1 function 
     public void buttonHold (Joystick joystick, int buttonNumber, Command buttoncommand){
