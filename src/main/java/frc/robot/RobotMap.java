@@ -30,6 +30,7 @@ public class RobotMap {
 
   public static final String KIMMIE = "Kimmie";
   public static final String VICTORIA = "Victoria";
+  public static final String DEEPSPACE = "DeepSpace";
   
   private static boolean ISKIMMIE = false;
   private static boolean ISVICTORIA = false;
@@ -61,8 +62,12 @@ public class RobotMap {
   public static Gyro gyro = new ADXRS450_Gyro();
 
   public RobotMap(String robotID){
+
+  
+    int leftDriveEncoderPort = 0, rightDriveEncoderPort = 2;
+
     if (robotID.equals (KIMMIE)){
-      ISKIMMIE = true;
+      ISKIMMIE = false;
 
       leftDrive = new Spark(2);
       rightDrive = new Spark(8);
@@ -73,10 +78,6 @@ public class RobotMap {
       middleLightSensor = new DigitalInput(8);
       rightLightSensor = new DigitalInput(9);
 
-      int leftDriveEncoderPort = 0, rightDriveEncoderPort = 2;
-      leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
-      rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
-
      //pneumatics
       gaston = new DoubleSolenoid(0, 1);
       brake = new DoubleSolenoid(2, 3);
@@ -84,6 +85,10 @@ public class RobotMap {
     }
     else if (robotID.equals (VICTORIA)){
       ISVICTORIA = true;
+
+      //TODO: Victoria may have different encoders than the current testing robots
+       leftDriveEncoderPort = 0;
+       rightDriveEncoderPort = 2;
 
         SpeedController leftFront = new Spark(0);
         leftFront.setInverted(false);
@@ -97,20 +102,65 @@ public class RobotMap {
         rightDrive = new SpeedControllerGroup(rightFront, rightBack);
         hatch = new Spark (13);
   
-        //DIO
-  
-        int leftDriveEncoderPort = 0, rightDriveEncoderPort = 2;
-        leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
-        rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
-
       }
 
     else 
     {
+      /* ...old way...
+      leftDrive = new Spark(0);
+      hatch = new Spark (2);
+      rightDrive = new Spark (1);
       leftDrive = new CANSparkMax(4,MotorType.kBrushless);
+<<<<<<< HEAD
       rightDrive = new CANSparkMax(6,MotorType.kBrushless);
       hatch = new CANSparkMax (2,MotorType.kBrushed);
+=======
+      //rightDrive = new CANSparkMax(6,MotorType.kBrushless);
+      //hatch = new CANSparkMax (2,MotorType.kBrushed);
+      */
+
+      //  .... NEW WAY !! ...
+      /*leftDrive = new SpeedControllerGroup(
+        tryNewSparkMax(4,MotorType.kBrushless),
+        tryNewSparkMax(5,MotorType.kBrushless)
+          );
+*/
+      rightDrive = new SpeedControllerGroup(
+        tryNewSparkMax(6,MotorType.kBrushless),
+        tryNewSparkMax(7,MotorType.kBrushless)
+           );
+      
+      leftDrive = hatch = tryNewSparkMax (3,MotorType.kBrushed);
+
+>>>>>>> 15891c12b858310c79a33c82e97708d6bb86ab3e
     }
+
+    //DIO
+    leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
+    rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
+    
+    
+  }
+  private SpeedController tryNewSparkMax(int port, MotorType sparkMaxType) {
+    SpeedController newMotor;
+    try {
+      if(port > 10) {
+        throw new Exception("Skipping CAN motor: " + port);
+      }
+
+      // try this step, knowing it might fail.
+      newMotor = new CANSparkMax(port, sparkMaxType);
+
+    } catch(Exception myCANException) {
+
+      // record the failure
+      myCANException.printStackTrace();
+
+      // also continue to make a motor-instance anyway!
+      newMotor = new Spark(port);
+    }
+
+    return newMotor;
   }
   public static boolean isKimmie(){
     return ISKIMMIE;
