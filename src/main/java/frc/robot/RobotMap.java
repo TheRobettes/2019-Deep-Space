@@ -109,7 +109,7 @@ public class RobotMap {
     {
       leftDrive = new CANSparkMax(4,MotorType.kBrushless);
       rightDrive = new CANSparkMax(6,MotorType.kBrushless);
-      hatch = new CANSparkMax (2,MotorType.kBrushless);
+      hatch = new CANSparkMax (2,MotorType.kBrushed);
     }
   }
   public static boolean isKimmie(){
