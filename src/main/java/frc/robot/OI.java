@@ -11,11 +11,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.BasicMovement;
 import frc.robot.commands.CompassDriving;
 import frc.robot.commands.DrivingTheLine;
 import frc.robot.commands.EnVISIONing;
 import frc.robot.commands.MoveHatchLevel;
 import frc.robot.commands.PistonMovement;
+import frc.robot.subsystems.BasicController;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -60,6 +62,10 @@ public class OI {
     buttonHold(secondaryJoystick, 11, new CompassDriving(0, 1.3));
     //westButton
     buttonHold(secondaryJoystick, 4, new CompassDriving(-90, 2));
+
+    buttonHold(secondaryJoystick, 8, new BasicMovement(Robot.manualHatch, 0.5));
+
+    buttonHold(secondaryJoystick, 9, new BasicMovement(Robot.manualHatch, -0.5));
   }
     //condesed whileHeld into 1 function 
     public void buttonHold (Joystick joystick, int buttonNumber, Command buttoncommand){

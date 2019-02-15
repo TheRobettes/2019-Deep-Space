@@ -111,28 +111,24 @@ public class RobotMap {
       hatch = new Spark (2);
       rightDrive = new Spark (1);
       leftDrive = new CANSparkMax(4,MotorType.kBrushless);
-<<<<<<< HEAD
-      rightDrive = new CANSparkMax(6,MotorType.kBrushless);
-      hatch = new CANSparkMax (2,MotorType.kBrushed);
-=======
       //rightDrive = new CANSparkMax(6,MotorType.kBrushless);
       //hatch = new CANSparkMax (2,MotorType.kBrushed);
       */
 
       //  .... NEW WAY !! ...
-      /*leftDrive = new SpeedControllerGroup(
-        tryNewSparkMax(4,MotorType.kBrushless),
-        tryNewSparkMax(5,MotorType.kBrushless)
+      leftDrive = new SpeedControllerGroup(
+        tryNewSparkMax(4,MotorType.kBrushless, false),
+        tryNewSparkMax(5,MotorType.kBrushless, false)
           );
-*/
+
       rightDrive = new SpeedControllerGroup(
-        tryNewSparkMax(6,MotorType.kBrushless),
-        tryNewSparkMax(7,MotorType.kBrushless)
+        tryNewSparkMax(6,MotorType.kBrushless, true),
+        tryNewSparkMax(7,MotorType.kBrushless, true)
            );
       
-      leftDrive = hatch = tryNewSparkMax (3,MotorType.kBrushed);
+     hatch = tryNewSparkMax (3,MotorType.kBrushed, false);
+     
 
->>>>>>> 15891c12b858310c79a33c82e97708d6bb86ab3e
     }
 
     //DIO
@@ -141,7 +137,8 @@ public class RobotMap {
     
     
   }
-  private SpeedController tryNewSparkMax(int port, MotorType sparkMaxType) {
+  //made to test and counter act problems with a single motor 
+  private SpeedController tryNewSparkMax(int port, MotorType sparkMaxType, boolean inverted) {
     SpeedController newMotor;
     try {
       if(port > 10) {
@@ -159,6 +156,7 @@ public class RobotMap {
       // also continue to make a motor-instance anyway!
       newMotor = new Spark(port);
     }
+    newMotor.setInverted(inverted);
 
     return newMotor;
   }

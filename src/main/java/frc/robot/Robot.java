@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.TeletubbyDrive;
-import frc.robot.subsystems.EncoderPID;
+import frc.robot.subsystems.BasicController;
+import frc.robot.subsystems.EncoderPID; 
 import frc.robot.subsystems.GyroPID;
 import frc.robot.subsystems.HatchLifter;
 import frc.robot.subsystems.PistonController;
@@ -28,11 +29,12 @@ import frc.robot.vision.Snapshot;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static RobotMap robotID = new RobotMap(RobotMap.VICTORIA);
+  public static RobotMap robotID = new RobotMap(RobotMap.DEEPSPACE);
   public static GyroPID driveChassis = new EncoderPID();
   public static HatchLifter hatch = new HatchLifter();
   public static PistonController skis = new PistonController(RobotMap.skis);
   public static PistonController gaston = new PistonController(RobotMap.gaston);
+  public static BasicController manualHatch = new BasicController(RobotMap.hatch);
   public static OI m_oi;
 
   Command m_autonomousCommand;
