@@ -48,13 +48,26 @@ public class OI {
   }
   else if( ! RobotMap.isVictoria()) {
 
-  
+    if(isManualHatchTesting){
+      buttonHold(secondaryJoystick, 8, new BasicMovement(Robot.manualHatch, 0.8));
 
+      buttonHold(secondaryJoystick, 9, new BasicMovement(Robot.manualHatch, -0.6)
+      {
+        @Override
+        protected void execute(){
+          super.execute();
+          SmartDashboard.putNumber ("hatch position ", RobotMap.hatchpotential.get());
+        }
+      } );
+    }
+    else{
+      //hatchButton
+      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(0.5));
+    }
     //Secondary Joystick Buttons
     //skisButton
     buttonHold(secondaryJoystick, 3, new PistonMovement(Robot.skis, PistonMovement.extend));
-    //hatchButton
-    buttonPress(secondaryJoystick, 5, new MoveHatchLevel(0.5));
+   
     //extendButton
     buttonHold(secondaryJoystick, 6, new PistonMovement(Robot.gaston, PistonMovement.extend));
     //retractButton
@@ -65,16 +78,7 @@ public class OI {
     //westButton
     buttonHold(secondaryJoystick, 4, new CompassDriving(-90, 2));
 
-    buttonHold(secondaryJoystick, 8, new BasicMovement(Robot.manualHatch, 0.8));
-
-    buttonHold(secondaryJoystick, 9, new BasicMovement(Robot.manualHatch, -0.6)
-    {
-      @Override
-      protected void execute(){
-        super.execute();
-        SmartDashboard.putNumber ("hatch position ", RobotMap.hatchPotential.get());
-      }
-    } );
+    
     
   }
     //condesed whileHeld into 1 function 

@@ -56,7 +56,7 @@ public class RobotMap {
   public static Encoder leftDriveEncoder = null;
   public static Encoder rightDriveEncoder = null;
 
-  public static AnalogPotentiometer hatchpotential = new AnalogPotentiometer(hatchPotentialPort);
+  public static AnalogPotentiometer hatchpotential = new AnalogPotentiometer(hatchPotentialPort, 2000, 1690);
   
   //current gyroscope 
   public static Gyro gyro = new ADXRS450_Gyro();

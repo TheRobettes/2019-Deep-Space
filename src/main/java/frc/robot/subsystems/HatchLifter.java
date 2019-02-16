@@ -19,7 +19,7 @@ import frc.robot.RobotMap;
  */
 public class HatchLifter extends PIDSubsystem {
   private final SpeedController hatchmotor = RobotMap.hatch;
-  private AnalogPotentiometer hatchpotential = RobotMap.hatchPotential;
+  private AnalogPotentiometer hatchpotential = RobotMap.hatchpotential;
   protected DoubleSolenoid brakePiston = RobotMap.brake;
   /**
    * Add your docs here.
