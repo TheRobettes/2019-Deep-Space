@@ -34,7 +34,8 @@ public class Robot extends TimedRobot {
   public static HatchLifter hatch = new HatchLifter();
   public static PistonController skis = new PistonController(RobotMap.skis);
   public static PistonController gaston = new PistonController(RobotMap.gaston);
-  public static BasicController manualHatch = new BasicController(RobotMap.hatch);
+  public static BasicController manualHatch = new BasicController(RobotMap.hatch); 
+
   public static OI m_oi;
 
   Command m_autonomousCommand;

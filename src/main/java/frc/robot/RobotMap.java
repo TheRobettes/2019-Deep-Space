@@ -56,7 +56,11 @@ public class RobotMap {
   public static Encoder leftDriveEncoder = null;
   public static Encoder rightDriveEncoder = null;
 
-  public static AnalogPotentiometer hatchpotential = new AnalogPotentiometer(hatchPotentialPort);
+  public static AnalogPotentiometer hatchPotential = new AnalogPotentiometer(hatchPotentialPort, 2000,-1690); 
+  /*int, full range, offset 
+  * 2000 comes from testing- it allowed us to get from 2 degree differences if full range was 100, to large numbers (2000) which have larger differences (45) 
+  * the -1690 comes from what needed to be subtracted from that large number to get it down to values of 90 and 45
+  */
   
   //current gyroscope 
   public static Gyro gyro = new ADXRS450_Gyro();
