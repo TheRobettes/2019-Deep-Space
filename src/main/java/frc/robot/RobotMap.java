@@ -87,8 +87,8 @@ public class RobotMap {
       ISVICTORIA = true;
 
       //TODO: Victoria may have different encoders than the current testing robots
-       leftDriveEncoderPort = 0;
-       rightDriveEncoderPort = 2;
+       leftDriveEncoderPort = 6;
+       rightDriveEncoderPort = 4;
 
         SpeedController leftFront = new Spark(0);
         leftFront.setInverted(false);
@@ -116,17 +116,17 @@ public class RobotMap {
       */
 
       //  .... NEW WAY !! ...
-      /*leftDrive = new SpeedControllerGroup(
+      leftDrive = new SpeedControllerGroup(
         tryNewSparkMax(4,MotorType.kBrushless),
         tryNewSparkMax(5,MotorType.kBrushless)
           );
-*/
+
       rightDrive = new SpeedControllerGroup(
         tryNewSparkMax(6,MotorType.kBrushless),
         tryNewSparkMax(7,MotorType.kBrushless)
            );
       
-      leftDrive = hatch = tryNewSparkMax (3,MotorType.kBrushed);
+      hatch = tryNewSparkMax (3,MotorType.kBrushed);
 
     }
 
@@ -134,7 +134,9 @@ public class RobotMap {
     leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
     rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
     
-    
+    if(isVictoria()){
+      rightDriveEncoder.setReverseDirection(true);
+    }
   }
   private SpeedController tryNewSparkMax(int port, MotorType sparkMaxType) {
     SpeedController newMotor;

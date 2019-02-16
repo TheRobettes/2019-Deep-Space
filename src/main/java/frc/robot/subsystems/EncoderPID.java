@@ -108,6 +108,8 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
 
     @Override
     public void enable() {
+      this.angleOffset = 0;
+      encoderPID.setSetpoint(0);
       encoderPID.enable();
       super.enable();
     }
