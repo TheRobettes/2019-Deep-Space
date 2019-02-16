@@ -11,11 +11,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.BasicMovement;
 import frc.robot.commands.CompassDriving;
 import frc.robot.commands.DrivingTheLine;
 import frc.robot.commands.EnVISIONing;
 import frc.robot.commands.MoveHatchLevel;
 import frc.robot.commands.PistonMovement;
+import frc.robot.subsystems.BasicController;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -26,6 +29,7 @@ public class OI {
   //TODO: put in CommandBase (command) as protected variables 
   public static Joystick xBox  = new Joystick(0);
   public static Joystick secondaryJoystick = new Joystick(1);
+  private static boolean isManualHatchTesting = false; 
 
   public OI() {
 
@@ -60,6 +64,18 @@ public class OI {
     buttonHold(secondaryJoystick, 11, new CompassDriving(0, 1.3));
     //westButton
     buttonHold(secondaryJoystick, 4, new CompassDriving(-90, 2));
+
+    buttonHold(secondaryJoystick, 8, new BasicMovement(Robot.manualHatch, 0.8));
+
+    buttonHold(secondaryJoystick, 9, new BasicMovement(Robot.manualHatch, -0.6)
+    {
+      @Override
+      protected void execute(){
+        super.execute();
+        SmartDashboard.putNumber ("hatch position ", RobotMap.hatchPotential.get());
+      }
+    } );
+    
   }
     //condesed whileHeld into 1 function 
     public void buttonHold (Joystick joystick, int buttonNumber, Command buttoncommand){
