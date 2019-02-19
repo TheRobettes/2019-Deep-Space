@@ -76,12 +76,15 @@ public class OI {
     buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract)); //In and out of hatch
   }
 
-  //TODO: re-investigate these buttons
+//DriveChassis calibration testing routines
     //northButton
-   buttonHold(xBox, 1, new CompassDriving(0, 1.3));
+   buttonHold(xBox, 4, new CompassDriving(0, 1.0));
     //westButton
-   buttonHold(xBox, 4, new CompassDriving(-90, 2));
-
+   buttonHold(xBox, 3, new CompassDriving(-90, 1.5));
+   //southButton
+   buttonHold(xBox, 1, new CompassDriving(-180, 2.0));
+  
+   
     
     
   }

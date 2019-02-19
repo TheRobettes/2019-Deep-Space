@@ -25,6 +25,7 @@ public class CompassDriving extends Command {
   @Override
   protected void initialize() {
     Robot.driveChassis.enable();
+    Robot.statusMessage("Begining compass" + this.direction);
   }
 
   // Called repeatedly when this Command is scheduled to run

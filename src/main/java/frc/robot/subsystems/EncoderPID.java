@@ -23,7 +23,7 @@ import frc.robot.RobotMap;
 public class EncoderPID extends GyroPID {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-private static final double ENCODER_P_VALUE = 0.010;
+private static final double ENCODER_P_VALUE = 0.005;
 private static final double ENCODER_I_VALUE = 0.0;
 private static final double ENCODER_D_VALUE = 0.5;
 private static final boolean temporaryInputHack = true;
@@ -49,9 +49,9 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
     }
       SmartDashboard.putNumber("Current Speed" , currentSpeed);
 
-      /*if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
+      if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
       || (previousAcceleration > 0 && currentAcceleration < 0)) //when speeding up to speeding down
-      */
+      
       {
          String encoderMessage = "\t pidSpeed: \t"  + speedPower + "(" + currentSpeed + ")  "
          + "rotation " + rotationPower + " Angle offset (" + angleOffset + ") ";
