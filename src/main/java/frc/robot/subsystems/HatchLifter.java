@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
@@ -19,20 +20,29 @@ import frc.robot.RobotMap;
  */
 public class HatchLifter extends PIDSubsystem {
   private final SpeedController hatchmotor = RobotMap.hatch;
-  private AnalogPotentiometer hatchpotential = RobotMap.hatchpotential;
-  protected DoubleSolenoid brakePiston = RobotMap.brake;
+
+ //gotten through testing- converts volts to degrees
+  private static double fullRange = 2000;
+
+  // gotten though testing-  the number subtracted from top range (2000) to make it be a good range of 40-140
+  private static double offset = -1690;
+
+  private static final AnalogPotentiometer hatchpotential = new AnalogPotentiometer(0, fullRange, offset);
+
+
+  //protected DoubleSolenoid brakePiston = RobotMap.brake;
   /**
    * Add your docs here.
    */
   public HatchLifter() {
     // Intert a subsystem name and PID values here
-    super("SubsystemName", 1, 2, 3); //TODO: Correct PID values
+    super("SubsystemName", .015, 0, 0.07); //TODO: Correct PID values
   
   }
  
   @Override
   public void enable() {
-    brakePiston.set(Value.kReverse);
+    //brakePiston.set(Value.kReverse); //TODO: uncomment if we are using a brake 
     super.enable();
 
   }
@@ -48,11 +58,14 @@ public class HatchLifter extends PIDSubsystem {
     // Return your input value for the PID loop
     // e.g. a sensor, like a potentiometer:
     // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    return hatchpotential.get();
+    double hatchPosition = hatchpotential.get();
+    Robot.statusMessage("POSITION:" + hatchPosition);
+    return hatchPosition;
   }
 
   @Override
   protected void usePIDOutput(double speed) {
+    Robot.statusMessage("HATCH_OUTPUT:" + speed);
     hatchmotor.set(speed);
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
@@ -60,7 +73,7 @@ public class HatchLifter extends PIDSubsystem {
 
   @Override
   public void disable() {
-    brakePiston.set(Value.kForward);
+    //brakePiston.set(Value.kForward); TODO: uncomment if we are using a brake 
     super.disable();
   }
 }

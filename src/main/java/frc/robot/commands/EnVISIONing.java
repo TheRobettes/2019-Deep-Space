@@ -22,7 +22,7 @@ public class EnVISIONing extends Command {
   private static double driveRate;
   private static boolean shoppingAtTarget = false;
   private static boolean missedTarget = false;
-  private static final double SPEED_LIMIT = 4;
+  private static final double SPEED_LIMIT = 2;
   private static final double MINIMUM_SPEED = 1;
   private static final double APPROACH_SPEED = (SPEED_LIMIT + MINIMUM_SPEED) / 2;
   private static double turningDirection;

@@ -26,7 +26,7 @@ public class PistonMovement extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("I'm going to start to give info about pistons");
+    System.out.println("Piston " + targetSubsystem + " setting to" + direction);
   }
 
   // Called repeatedly when this Command is scheduled to run

@@ -19,12 +19,15 @@ public abstract class DriveChassis extends PIDSubsystem {
   public DriveChassis(String variableName, double gyro_P_Value, double gyro_I_Value, double gyro_D_Value){
     super(variableName, gyro_P_Value, gyro_I_Value, gyro_D_Value);
     driving.setExpiration(.5);
+    //driving.setRightSideInverted(false);
   }
  public void arcadeDrive(double speed, double rotation ){
      driving.arcadeDrive(speed, rotation); 
+     this.getDistance();
 }
 
-  
+public abstract double getDistance();
+
 
   @Override
   public void initDefaultCommand() {

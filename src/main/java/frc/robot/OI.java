@@ -29,7 +29,7 @@ public class OI {
   //TODO: put in CommandBase (command) as protected variables 
   public static Joystick xBox  = new Joystick(0);
   public static Joystick secondaryJoystick = new Joystick(1);
-  private static boolean isManualHatchTesting = false; 
+  private static boolean isManualHatchTesting = true; 
 
   public OI() {
 
@@ -42,41 +42,45 @@ public class OI {
       //luminenceButton
       buttonHold(xBox, 6, new DrivingTheLine(180, 1.5));//CHECK BUTTON WITH OLLIE
       //drive without gyro on the line
-      buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
-
-      
+      buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));   
   }
-  else if( ! RobotMap.isVictoria()) {
+
+  else if( ! RobotMap.isVictoria()) { 
+    
+    //a.k.a. DEEPSPACE robot
 
     if(isManualHatchTesting){
-      buttonHold(secondaryJoystick, 8, new BasicMovement(Robot.manualHatch, 0.8));
+      buttonHold(secondaryJoystick, 8, newManualHatch(0.9));
 
-      buttonHold(secondaryJoystick, 9, new BasicMovement(Robot.manualHatch, -0.6)
-      {
-        @Override
-        protected void execute(){
-          super.execute();
-          SmartDashboard.putNumber ("hatch position ", RobotMap.hatchpotential.get());
-        }
-      } );
+      buttonHold(secondaryJoystick, 9, newManualHatch(-0.6));
     }
-    else{
+  
+    //else
+    { // PID based hatch-levels...
       //hatchButton
-      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(0.5));
+      //TODO: later
+      buttonHold(secondaryJoystick, 4, new MoveHatchLevel(45));
+      buttonHold(secondaryJoystick, 3, new MoveHatchLevel(90));
+      buttonHold(secondaryJoystick, 5, new MoveHatchLevel(120));
     }
     //Secondary Joystick Buttons
-    //skisButton
-    buttonHold(secondaryJoystick, 3, new PistonMovement(Robot.skis, PistonMovement.extend));
+    //DEEPSPACE
+    //gaston down (at begining of match)
+    buttonPress(secondaryJoystick, 10, new PistonMovement(Robot.gastonUpAndDown, PistonMovement.extend));
+    //gaston up at end of match 
+    buttonPress(secondaryJoystick, 11, new PistonMovement(Robot.gastonUpAndDown, PistonMovement.retract));
    
     //extendButton
-    buttonHold(secondaryJoystick, 6, new PistonMovement(Robot.gaston, PistonMovement.extend));
+    buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, PistonMovement.extend)); //Get grip on hatch
     //retractButton
-    buttonHold(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract));
+    buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract)); //In and out of hatch
   }
+
+  //TODO: re-investigate these buttons
     //northButton
-    buttonHold(secondaryJoystick, 11, new CompassDriving(0, 1.3));
+   buttonHold(xBox, 1, new CompassDriving(0, 1.3));
     //westButton
-    buttonHold(secondaryJoystick, 4, new CompassDriving(-90, 2));
+   buttonHold(xBox, 4, new CompassDriving(-90, 2));
 
     
     
@@ -94,5 +98,16 @@ public class OI {
       button.whenPressed(buttoncommand);
       button.close();
     }
+
+public static Command newManualHatch(double power){
+    Command hatchCommand = new BasicMovement(Robot.manualHatch, power) {
+      @Override
+      protected void execute(){
+        super.execute();
+        SmartDashboard.putNumber ("hatch position ", Robot.hatch.getPosition());
+      }
+    };
+  return hatchCommand;
+}
 
 }
