@@ -8,6 +8,7 @@
 package frc.robot.vision;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.opencv.core.Rect;
 
@@ -18,57 +19,48 @@ public class TargetAnalysis {
     public static boolean foundTarget;
 
     public static double targetXOffset;
-    public static double  targetWidthPct;
+    public static double targetWidthPct;
 
-    public static final long cameraCenterX = Snapshot.IMG_WIDTH/2;
+    public static final long cameraCenterX = Snapshot.IMG_WIDTH / 2;
 
     public static void updateValues() {
 
-        Rect targetTheFirst = null;
-        Rect targetTheSecond = null;
+        Rect targetTheLeft = null;
+        Rect targetTheRight = null;
 
-        ArrayList<Rect> rectangles = Snapshot.getContours();
+        ArrayList<Tape> rectangles = Snapshot.getContours();
         int count = rectangles.size();
 
         foundTarget = false;
-        for(int x = 0; x < count; x++) {
-            Rect r = rectangles.get(x);
+        Collections.sort(rectangles);
+        for (int x = 0; x < count; x++) {
+            Tape r = rectangles.get(x);
 
-            if(targetTheFirst == null) {
-                targetTheFirst = r;
+            if (targetTheLeft == null && r.isPositive) {
+                targetTheLeft = r;
             }
 
-            else if(targetTheSecond == null) {
-                targetTheSecond = r;
+            else if (targetTheRight == null && !r.isPositive && targetTheLeft != null) {
+                targetTheRight = r;
             }
+
         }
 
-        if(targetTheSecond != null) {
+        if (targetTheRight != null) {
             foundTarget = true;
-            double innerEdgeLeftContour = targetTheFirst.x + targetTheFirst.width; 
-            double innerEdgeRightContour = targetTheSecond.x;
+            double innerEdgeLeftContour = targetTheLeft.x + targetTheLeft.width;
+            double innerEdgeRightContour = targetTheRight.x;
 
-            //System.out.println("INNER LEFT EDGE: " + innerEdgeLeftContour + " INNER RIGHT EDGE: " + innerEdgeRightContour);
+            // System.out.println("INNER LEFT EDGE: " + innerEdgeLeftContour + " INNER RIGHT
+            // EDGE: " + innerEdgeRightContour);
 
-
-            if (innerEdgeRightContour < innerEdgeLeftContour) {
-                innerEdgeLeftContour = targetTheSecond.x + targetTheSecond.width;
-                innerEdgeRightContour = targetTheFirst.x;
-                //System.out.println("     INNER LEFT EDGE: " + innerEdgeLeftContour + " INNER RIGHT EDGE: " + innerEdgeRightContour);
-
-            }
-
-
-            //inner right - inner left = space between contours
+            // inner right - inner left = space between contours
             targetWidthPct = 100.0 * (innerEdgeRightContour - innerEdgeLeftContour) / Snapshot.IMG_WIDTH;
 
-            double gapCenter = (innerEdgeRightContour + innerEdgeLeftContour)/2;
-            targetXOffset = (long)( 100.0 * (gapCenter - cameraCenterX)) / Snapshot.IMG_WIDTH;
+            double gapCenter = (innerEdgeRightContour + innerEdgeLeftContour) / 2;
+            targetXOffset = (long) (100.0 * (gapCenter - cameraCenterX)) / Snapshot.IMG_WIDTH;
         }
 
     }
-
-
-
 
 }
