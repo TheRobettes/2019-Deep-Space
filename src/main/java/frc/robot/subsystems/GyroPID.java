@@ -15,7 +15,7 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public abstract class GyroPID extends DriveChassis { //TODO: figure out these numbers 
+public class GyroPID extends DriveChassis { //TODO: figure out these numbers 
   private static final double gyro_P_Value = 0.065;
   private static final double gyro_I_Value = 0.0045;
   private static final double gyro_D_Value = 0.2;

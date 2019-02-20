@@ -29,12 +29,10 @@ import frc.robot.vision.Snapshot;
  */
 public class RobotMap {
 
-  private static final boolean IS_TEST_ROBOT = true ;
-
-
+  public static final boolean IS_PRACTICE_ROBO = false;
+  
   public static final String KIMMIE = "Kimmie";
   public static final String VICTORIA = "Victoria";
-  public static final String DEEPSPACE = "DeepSpace";
   
   private static boolean ISKIMMIE = false;
   private static boolean ISVICTORIA = false;
@@ -60,7 +58,7 @@ public class RobotMap {
   public static Encoder leftDriveEncoder = null;
   public static Encoder rightDriveEncoder = null;
 
-  
+  public static AnalogPotentiometer hatchpotential = new AnalogPotentiometer(hatchPotentialPort);
   
   //current gyroscope 
   public static Gyro gyro = new ADXRS450_Gyro();
@@ -70,7 +68,7 @@ public class RobotMap {
     int leftDriveEncoderPort = 0, rightDriveEncoderPort = 2;
 
     if (robotID.equals (KIMMIE)){
-      ISKIMMIE = false;
+      ISKIMMIE = true;
 
       leftDrive = new Spark(2);
       rightDrive = new Spark(8);
@@ -81,18 +79,15 @@ public class RobotMap {
       middleLightSensor = new DigitalInput(8);
       rightLightSensor = new DigitalInput(9);
 
-     //pneumatics
-      gaston = new Solenoid(1); 
-      //brake = new Solenoid(4, 5);
-      gastonUpAndDown = new Solenoid(3);
-    }
+      leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
+      rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
 
+    }
     else if (robotID.equals (VICTORIA)){
       ISVICTORIA = true;
 
-      //TODO: Victoria may have different encoders than the current testing robots
-       leftDriveEncoderPort = 6;
-       rightDriveEncoderPort = 4;
+      leftDriveEncoderPort = 4;
+      rightDriveEncoderPort = 6;
 
         SpeedController leftFront = new Spark(0);
         leftFront.setInverted(false);
@@ -106,32 +101,28 @@ public class RobotMap {
         rightDrive = new SpeedControllerGroup(rightFront, rightBack);
         hatch = new Spark (13);
   
+        //DIO
+        leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
+        rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
+
       }
 
-    else //DEEP SPACE
+    else 
     {
-
-      String robotName = (IS_TEST_ROBOT) ? "PRACTICE" : "COMPETITION";
-      System.out.println(" Creating adapters for: " + robotName);
-
-      /* ...old way...
-      leftDrive = new Spark(0);
-      hatch = new Spark (2);
-      rightDrive = new Spark (1);
       leftDrive = new CANSparkMax(4,MotorType.kBrushless);
       //rightDrive = new CANSparkMax(6,MotorType.kBrushless);
       //hatch = new CANSparkMax (2,MotorType.kBrushed);
-      */
+      
 
       //  .... NEW WAY !! ...
       leftDrive = new SpeedControllerGroup(
-        tryNewSparkMax(4,MotorType.kBrushless, false ),
-        tryNewSparkMax(5,MotorType.kBrushless, false)
+        tryNewSparkMax(4,MotorType.kBrushless, IS_PRACTICE_ROBO ),
+        tryNewSparkMax(5,MotorType.kBrushless, IS_PRACTICE_ROBO )
           );
 
       rightDrive = new SpeedControllerGroup(
-        tryNewSparkMax(6,MotorType.kBrushless, true),
-        tryNewSparkMax(7,MotorType.kBrushless, true)
+        tryNewSparkMax(6,MotorType.kBrushless, !IS_PRACTICE_ROBO ),
+        tryNewSparkMax(7,MotorType.kBrushless, !IS_PRACTICE_ROBO )
            );
       
       hatch = tryNewSparkMax (3,MotorType.kBrushed, false);
@@ -152,36 +143,33 @@ public class RobotMap {
       rightDriveEncoder.setReverseDirection(true);
     }
   }
-  private SpeedController tryNewSparkMax(int port, MotorType sparkMaxType, boolean invert) {
-    SpeedController newMotor = tryNewSparkMax(port, sparkMaxType);
-    newMotor.setInverted(invert);
-    return newMotor;
-  }
-  private SpeedController tryNewSparkMax(int port, MotorType sparkMaxType) {
-    SpeedController newMotor;
-    try {
-      if(port > 10) {
-        throw new Exception("Skipping CAN motor: " + port);
-      }
-
-      // try this step, knowing it might fail.
-      newMotor = new CANSparkMax(port, sparkMaxType);
-
-    } catch(Exception myCANException) {
-
-      // record the failure
-      myCANException.printStackTrace();
-
-      // also continue to make a motor-instance anyway!
-      newMotor = new Spark(port);
-    }
-
-    return newMotor;
-  }
   public static boolean isKimmie(){
     return ISKIMMIE;
   }
   public static boolean isVictoria(){
     return ISVICTORIA;
+  }
+
+  private SpeedController tryNewSparkMax(int port, MotorType motorType, boolean invert) {
+    SpeedController motor = tryNewSparkMax(port, motorType);
+    motor.setInverted(invert);
+    return motor;
+  }
+
+  private SpeedController tryNewSparkMax(int port, MotorType motorType) {
+    SpeedController motor;
+   
+    // First, attempt connecting to an expected CANID...
+    try {
+        motor = new CANSparkMax(port, motorType);
+    }
+
+    //  ... if that failed for any reason, do next-new statement as an fault-correction.
+    catch (Exception ex) {
+      ex.printStackTrace();
+      motor = new Spark(port);
+    }
+
+    return motor;
   }
 }

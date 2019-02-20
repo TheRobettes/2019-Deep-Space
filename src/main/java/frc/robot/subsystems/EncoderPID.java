@@ -31,7 +31,6 @@ private static final boolean temporaryOutputHack = true;
 private double previousSpeed = 0;
 private double previousAcceleration = 0;
 private final double maxAccel = 0.5; 
-private final double distancePerPulse = 5.1/3500; //6.3 / 793;
 
 private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCODER_I_VALUE, ENCODER_D_VALUE, 
   new PIDSource(){
@@ -39,7 +38,7 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
 
     @Override
     public double pidGet() {
-      double currentSpeed = (RobotMap.rightDriveEncoder.getRate() + RobotMap.leftDriveEncoder.getRate()) / 2;
+      double currentSpeed = RobotMap.rightDriveEncoder.getRate();
       double currentAcceleration = currentSpeed - previousSpeed;
       if (Math.abs(currentAcceleration) > maxAccel && temporaryInputHack){
         if (currentAcceleration < 0) 
@@ -87,25 +86,10 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
    
     
     public EncoderPID (){
+     double distancePerPulse = 6.3 / 793;
       RobotMap.rightDriveEncoder.setDistancePerPulse(distancePerPulse);
-      RobotMap.leftDriveEncoder.setDistancePerPulse(-distancePerPulse);
-      System.out.println("Distance per pulse: " + distancePerPulse);
     }
-
-    @Override
-    public double getDistance(){
-      double rightDistance = RobotMap.rightDriveEncoder.getDistance();
-      double leftDistance = RobotMap.leftDriveEncoder.getDistance();
-      
-      //Conditional code for calibrating encoders
-      if(distancePerPulse == 1) 
-      {
-        Robot.statusMessage("Right distance: " + rightDistance + " Left distance: " + leftDistance);
-      }
-
-      return (leftDistance + rightDistance) / 2; //average of left and right drive encoders
-    }
-
+   
     public void pidSpeedCorrection(double PIDOutput){
       speedPower = PIDOutput;
       if (Math.abs(this.angleOffset) > 15.0 && temporaryOutputHack)
@@ -124,8 +108,6 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
 
     @Override
     public void enable() {
-      this.angleOffset = 0;
-      encoderPID.setSetpoint(0);
       encoderPID.enable();
       super.enable();
     }

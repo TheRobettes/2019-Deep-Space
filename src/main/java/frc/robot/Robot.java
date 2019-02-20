@@ -13,10 +13,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.PistonMovement;
 import frc.robot.commands.TeletubbyDrive;
 import frc.robot.subsystems.BasicController;
-import frc.robot.subsystems.EncoderPID; 
+import frc.robot.subsystems.EncoderPID;
 import frc.robot.subsystems.GyroPID;
 import frc.robot.subsystems.HatchLifter;
 import frc.robot.subsystems.PistonController;
@@ -30,31 +29,12 @@ import frc.robot.vision.Snapshot;
  * project.
  */
 public class Robot extends TimedRobot {
-  protected static final Timer summerTime = new Timer();
-
-  public static RobotMap robotID = new RobotMap(RobotMap.DEEPSPACE);
+  public static RobotMap robotID = new RobotMap(RobotMap.VICTORIA);
   public static GyroPID driveChassis = new EncoderPID();
   public static HatchLifter hatch = new HatchLifter();
-  public static PistonController gastonUpAndDown = new PistonController(RobotMap.gastonUpAndDown)
-  {
-    @Override 
-    public void initDefaultCommand() {
-   setDefaultCommand(new PistonMovement(Robot.gastonUpAndDown, PistonMovement.extend));
-    } 
-     @Override
-    public String toString(){
-      return "UpandDown";
-    }
-  };
-  public static PistonController gaston = new PistonController(RobotMap.gaston)
-  {
-    @Override
-    public String toString(){
-      return "Gaston";
-    }
-  };
-  public static BasicController manualHatch = new BasicController(RobotMap.hatch); 
-
+  public static BasicController manualHatch = new BasicController(RobotMap.hatch);
+  public static PistonController gastonUpDown = new PistonController(RobotMap.gastonUpAndDown);
+  public static PistonController gaston = new PistonController(RobotMap.gaston);
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -74,10 +54,10 @@ public class Robot extends TimedRobot {
     Snapshot.cameraInit();
 
     summerTime.start();
-    
   }
+  protected static final Timer summerTime = new Timer();
   public static void statusMessage(String message) {
-    String gameTimeMessage = "" + summerTime.get() + "S " + message; 
+    String gameTimeMessage = "" + summerTime.get() + " " + message; 
 
     //we want to keep digit.digit and strip away any extra digits after that
     String formatedMessage = gameTimeMessage.replaceAll("(\\d[.]\\d)\\d+", "$1");

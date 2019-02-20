@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
@@ -40,6 +39,11 @@ public class HatchLifter extends PIDSubsystem {
     super("SubsystemName", 0.02, 0.0, 0.07); //TODO: Correct PID values //previous was 0.015, 0, 0.07
   
   }
+
+  public static double getHatchPosition() {
+    return hatchpotential.get();
+  }
+
  
   @Override
   public void enable() {
@@ -59,14 +63,11 @@ public class HatchLifter extends PIDSubsystem {
     // Return your input value for the PID loop
     // e.g. a sensor, like a potentiometer:
     // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    double hatchPosition = hatchpotential.get();
-    Robot.statusMessage("POSITION:" + hatchPosition);
-    return hatchPosition;
+    return hatchpotential.get();
   }
 
   @Override
   protected void usePIDOutput(double speed) {
-    Robot.statusMessage("HATCH_OUTPUT:" + speed);
     hatchmotor.set(speed);
 
   }

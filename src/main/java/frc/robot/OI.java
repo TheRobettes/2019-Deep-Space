@@ -12,13 +12,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.BasicMovement;
-import frc.robot.commands.CompassDriving;
-import frc.robot.commands.DrivingTheLine;
-import frc.robot.commands.EnVISIONing;
-import frc.robot.commands.MoveHatchLevel;
-import frc.robot.commands.PistonMovement;
-import frc.robot.subsystems.BasicController;
+import frc.robot.commands.*;
+import frc.robot.subsystems.HatchLifter;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -29,12 +24,8 @@ public class OI {
   //TODO: put in CommandBase (command) as protected variables 
   public static Joystick xBox  = new Joystick(0);
   public static Joystick secondaryJoystick = new Joystick(1);
-  private static boolean isManualHatchTesting = true; 
 
   public OI() {
-
-    buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
-
     //Primary Joystick Buttons
     if(RobotMap.isKimmie()){
       //illuminationButton
@@ -42,39 +33,28 @@ public class OI {
       //luminenceButton
       buttonHold(xBox, 6, new DrivingTheLine(180, 1.5));//CHECK BUTTON WITH OLLIE
       //drive without gyro on the line
-      buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));   
-  }
-
-  else if( ! RobotMap.isVictoria()) { 
-    
-    //a.k.a. DEEPSPACE robot
-
-    if(isManualHatchTesting){
-      buttonHold(secondaryJoystick, 8, newManualHatch(0.9));
-
-      buttonHold(secondaryJoystick, 9, newManualHatch(-0.6));
+      buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
     }
+    
+    
+    buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
+
+    //non-PID hatch movement
+    buttonHold(secondaryJoystick, 9, newManualHatch(-0.6)); //manual hatch down
+    buttonHold(secondaryJoystick, 8, newManualHatch(0.8)); //manual hatch up
   
-    //else
-    { // PID based hatch-levels...
+     //PID based hatch-levels...
       //hatchButton
-      //TODO: later
       buttonHold(secondaryJoystick, 4, new MoveHatchLevel(20));
       buttonHold(secondaryJoystick, 3, new MoveHatchLevel(90));
       buttonHold(secondaryJoystick, 5, new MoveHatchLevel(145));
-    }
+    
     //Secondary Joystick Buttons
-    //DEEPSPACE
-    //gaston down (at begining of match)
-    buttonPress(secondaryJoystick, 10, new PistonMovement(Robot.gastonUpAndDown, PistonMovement.extend));
-    //gaston up at end of match 
-    buttonPress(secondaryJoystick, 11, new PistonMovement(Robot.gastonUpAndDown, PistonMovement.retract));
-   
     //extendButton
-    buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, PistonMovement.extend)); //hatch open
+    buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, true)); //hatch open
     //retractButton
-    buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract)); // hatch close
-  }
+    buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, false)); // hatch close
+  
 
 //DriveChassis calibration testing routines
     //northButton
@@ -107,7 +87,7 @@ public static Command newManualHatch(double power){
       @Override
       protected void execute(){
         super.execute();
-        SmartDashboard.putNumber ("hatch position ", Robot.hatch.getPosition());
+        SmartDashboard.putNumber ("hatch position ", HatchLifter.getHatchPosition());
       }
     };
   return hatchCommand;
