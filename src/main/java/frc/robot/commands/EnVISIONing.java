@@ -67,7 +67,7 @@ public class EnVISIONing extends Command {
 
     //stationary safety code for debugging
 
-    //turningDirection = driveRate = 0;
+    turningDirection = driveRate = 0;
     
     if(imageCycles++ < MAX_IMAGE_CYCLES) {
         Robot.driveChassis.compassDrive(driveRate, turningDirection); //what happened to driveRate?
@@ -81,6 +81,8 @@ public class EnVISIONing extends Command {
 
  protected void calcDriveRates() {
 
+  
+  //TODO: need to complete when done code
   if(TargetAnalysis.targetWidthPct > 80.0) {
     if(Math.abs(TargetAnalysis.targetAngleFromVision) < 7) {
       shoppingAtTarget = true;

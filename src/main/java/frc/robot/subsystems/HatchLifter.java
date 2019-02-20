@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -20,37 +21,37 @@ import frc.robot.RobotMap;
  */
 public class HatchLifter extends PIDSubsystem {
   private final SpeedController hatchmotor = RobotMap.hatch;
+  private static boolean waxOn = true;
 
  //gotten through testing- converts volts to degrees
   private static double fullRange = 2000;
 
   // gotten though testing-  the number subtracted from top range (2000) to make it be a good range of 40-140
-  private static double offset = -1690;
+  private static double offset = -1705;
 
   private static final AnalogPotentiometer hatchpotential = new AnalogPotentiometer(0, fullRange, offset);
 
 
-  //protected DoubleSolenoid brakePiston = RobotMap.brake;
-  /**
-   * Add your docs here.
-   */
+  protected Solenoid brakePiston = RobotMap.brake;
+  
+
   public HatchLifter() {
     // Intert a subsystem name and PID values here
-    super("SubsystemName", .015, 0, 0.07); //TODO: Correct PID values
+    super("SubsystemName", 0.02, 0.0, 0.07); //TODO: Correct PID values //previous was 0.015, 0, 0.07
   
   }
  
   @Override
   public void enable() {
-    //brakePiston.set(Value.kReverse); //TODO: uncomment if we are using a brake 
+    brakePiston.set(!waxOn);
+    System.out.println(" brake off" );
     super.enable();
 
   }
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+
   }
 
   @Override
@@ -67,13 +68,13 @@ public class HatchLifter extends PIDSubsystem {
   protected void usePIDOutput(double speed) {
     Robot.statusMessage("HATCH_OUTPUT:" + speed);
     hatchmotor.set(speed);
-    // Use output to drive your system, like a motor
-    // e.g. yourMotor.set(output);
+
   }
 
   @Override
   public void disable() {
-    //brakePiston.set(Value.kForward); TODO: uncomment if we are using a brake 
+    brakePiston.set(waxOn);
+    System.out.println(" brake on");
     super.disable();
   }
 }

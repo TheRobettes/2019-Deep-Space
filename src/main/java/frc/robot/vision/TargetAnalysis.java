@@ -46,7 +46,6 @@ public class TargetAnalysis {
             }
         }
 
-        foundTarget = (count == 2);
 
         if(targetTheSecond != null) {
             double innerEdgeLeftContour = targetTheFirst.x + targetTheFirst.width; 

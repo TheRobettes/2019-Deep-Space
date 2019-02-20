@@ -46,7 +46,7 @@ public class RobotMap {
   
   //VRM
   public static Solenoid gaston = null;
-  //public static DoubleSolenoid brake = null;
+  public static Solenoid brake = null;
   public static Solenoid gastonUpAndDown = null;
   
   
@@ -137,7 +137,7 @@ public class RobotMap {
       hatch = tryNewSparkMax (3,MotorType.kBrushed, false);
 
       gaston = new Solenoid(1); 
-     // brake = new DoubleSolenoid(4, 5);
+      brake = new Solenoid (2);
       gastonUpAndDown = new Solenoid(3);
     
     }

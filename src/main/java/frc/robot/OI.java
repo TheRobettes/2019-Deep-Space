@@ -59,9 +59,9 @@ public class OI {
     { // PID based hatch-levels...
       //hatchButton
       //TODO: later
-      buttonHold(secondaryJoystick, 4, new MoveHatchLevel(45));
+      buttonHold(secondaryJoystick, 4, new MoveHatchLevel(20));
       buttonHold(secondaryJoystick, 3, new MoveHatchLevel(90));
-      buttonHold(secondaryJoystick, 5, new MoveHatchLevel(120));
+      buttonHold(secondaryJoystick, 5, new MoveHatchLevel(145));
     }
     //Secondary Joystick Buttons
     //DEEPSPACE
@@ -71,9 +71,9 @@ public class OI {
     buttonPress(secondaryJoystick, 11, new PistonMovement(Robot.gastonUpAndDown, PistonMovement.retract));
    
     //extendButton
-    buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, PistonMovement.extend)); //Get grip on hatch
+    buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, PistonMovement.extend)); //hatch open
     //retractButton
-    buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract)); //In and out of hatch
+    buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, PistonMovement.retract)); // hatch close
   }
 
 //DriveChassis calibration testing routines
