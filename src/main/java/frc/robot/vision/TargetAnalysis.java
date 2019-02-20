@@ -9,17 +9,19 @@ package frc.robot.vision;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import org.opencv.core.Rect;
 
 /**
  * Add your docs here.
  */
 public class TargetAnalysis {
+
+    private static final double FIELD_OF_VIEW_ADJUSTMENT = 16.0/29; //result taken from "LifeCam" camera
+
     public static boolean foundTarget;
 
-    public static double targetXOffset;
-    public static double targetWidthPct;
+    public static double targetAngleFromVision;
+    public static double  targetWidthPct;
 
     public static final long cameraCenterX = Snapshot.IMG_WIDTH / 2;
 
@@ -57,8 +59,9 @@ public class TargetAnalysis {
             // inner right - inner left = space between contours
             targetWidthPct = 100.0 * (innerEdgeRightContour - innerEdgeLeftContour) / Snapshot.IMG_WIDTH;
 
-            double gapCenter = (innerEdgeRightContour + innerEdgeLeftContour) / 2;
-            targetXOffset = (long) (100.0 * (gapCenter - cameraCenterX)) / Snapshot.IMG_WIDTH;
+            double gapCenter = (innerEdgeRightContour + innerEdgeLeftContour)/2;
+            double targetXOffset = (long)( 100.0 * (gapCenter - cameraCenterX)) / Snapshot.IMG_WIDTH;
+            targetAngleFromVision = FIELD_OF_VIEW_ADJUSTMENT*targetXOffset;
         }
 
     }

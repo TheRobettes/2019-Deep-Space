@@ -1,5 +1,7 @@
 package frc.robot.vision;
 
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Rect;
 
 public class Tape extends Rect implements Comparable {
     public boolean isPositive = false;
