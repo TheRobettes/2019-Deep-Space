@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import frc.robot.sparkMaxVelocity.TeamDriveMotor;
 import frc.robot.vision.Snapshot;
 
 /**
@@ -29,10 +30,11 @@ import frc.robot.vision.Snapshot;
  */
 public class RobotMap {
 
-  public static final boolean IS_PRACTICE_ROBO = false;
+  public static final boolean IS_PRACTICE_ROBO = true; 
   
   public static final String KIMMIE = "Kimmie";
   public static final String VICTORIA = "Victoria";
+  public static final String DEEPSPACE = "Aisha";
   
   private static boolean ISKIMMIE = false;
   private static boolean ISVICTORIA = false;
@@ -47,9 +49,6 @@ public class RobotMap {
   public static Solenoid brake = null;
   public static Solenoid gastonUpAndDown = null;
   
-  
-  //Analog
-  private static int hatchPotentialPort = 0;
 
   //DIO Sensors
   public static DigitalInput leftLightSensor = null;
@@ -58,8 +57,6 @@ public class RobotMap {
   public static Encoder leftDriveEncoder = null;
   public static Encoder rightDriveEncoder = null;
 
-  public static AnalogPotentiometer hatchpotential = new AnalogPotentiometer(hatchPotentialPort);
-  
   //current gyroscope 
   public static Gyro gyro = new ADXRS450_Gyro();
 
@@ -78,9 +75,6 @@ public class RobotMap {
       leftLightSensor = new DigitalInput(7);
       middleLightSensor = new DigitalInput(8);
       rightLightSensor = new DigitalInput(9);
-
-      leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
-      rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
 
     }
     else if (robotID.equals (VICTORIA)){
@@ -101,18 +95,19 @@ public class RobotMap {
         rightDrive = new SpeedControllerGroup(rightFront, rightBack);
         hatch = new Spark (13);
   
-        //DIO
-        leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
-        rightDriveEncoder = new Encoder(rightDriveEncoderPort, rightDriveEncoderPort+1);
-
       }
 
     else 
+    // for Aisha 
     {
+
+      /*
+      OLD WAY
+
       leftDrive = new CANSparkMax(4,MotorType.kBrushless);
-      //rightDrive = new CANSparkMax(6,MotorType.kBrushless);
-      //hatch = new CANSparkMax (2,MotorType.kBrushed);
-      
+      rightDrive = new CANSparkMax(6,MotorType.kBrushless);
+      hatch = new CANSparkMax (2,MotorType.kBrushed);
+      */ 
 
       //  .... NEW WAY !! ...
       leftDrive = new SpeedControllerGroup(
@@ -125,13 +120,15 @@ public class RobotMap {
         tryNewSparkMax(7,MotorType.kBrushless, !IS_PRACTICE_ROBO )
            );
       
-      hatch = tryNewSparkMax (3,MotorType.kBrushed, false);
+      hatch = tryNewSparkMax (3,MotorType.kBrushed);
 
       gaston = new Solenoid(1); 
       brake = new Solenoid (2);
       gastonUpAndDown = new Solenoid(3);
     
     }
+
+    //this is for all robots 
 
     //DIO
     leftDriveEncoder = new Encoder(leftDriveEncoderPort, leftDriveEncoderPort+1);
@@ -161,7 +158,11 @@ public class RobotMap {
    
     // First, attempt connecting to an expected CANID...
     try {
-        motor = new CANSparkMax(port, motorType);
+     
+      //initializing team drive motors versus hatch arm motor 
+      motor = (motorType == MotorType.kBrushless) 
+      ? new TeamDriveMotor(port) //if brushed- built in velocity controled
+      :  new CANSparkMax(port, motorType); //regular for hatch
     }
 
     //  ... if that failed for any reason, do next-new statement as an fault-correction.

@@ -29,7 +29,7 @@ import frc.robot.vision.Snapshot;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static RobotMap robotID = new RobotMap(RobotMap.VICTORIA);
+  public static RobotMap robotID = new RobotMap(RobotMap.DEEPSPACE);
   public static GyroPID driveChassis = new EncoderPID();
   public static HatchLifter hatch = new HatchLifter();
   public static BasicController manualHatch = new BasicController(RobotMap.hatch);
@@ -46,11 +46,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    //Todo need a print for practice versus comp
     m_oi = new OI();
     m_chooser.setDefaultOption("Default Auto", new TeletubbyDrive());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    
+
     Snapshot.cameraInit();
 
     summerTime.start();
