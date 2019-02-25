@@ -40,10 +40,12 @@ public class TargetAnalysis {
 
             if (targetTheLeft == null && r.isPositive) {
                 targetTheLeft = r;
+                System.out.println("LeftX " + r.x);
             }
 
             else if (targetTheRight == null && !r.isPositive && targetTheLeft != null) {
                 targetTheRight = r;
+                System.out.println("RightX " + r.x);
             }
 
         }

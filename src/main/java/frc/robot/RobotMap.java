@@ -37,7 +37,7 @@ public class RobotMap {
   public static final String DEEPSPACE = "Aisha";
   
   private static boolean ISKIMMIE = false;
-  private static boolean ISVICTORIA = false;
+  private static boolean ISVICTORIA = true;
 
   //currently speedcontrollers
   public static SpeedController leftDrive;
@@ -81,7 +81,7 @@ public class RobotMap {
       ISVICTORIA = true;
 
       leftDriveEncoderPort = 4;
-      rightDriveEncoderPort = 6;
+      rightDriveEncoderPort = 2;
 
         SpeedController leftFront = new Spark(0);
         leftFront.setInverted(false);
@@ -111,13 +111,13 @@ public class RobotMap {
 
       //  .... NEW WAY !! ...
       leftDrive = new SpeedControllerGroup(
-        tryNewSparkMax(4,MotorType.kBrushless, IS_PRACTICE_ROBO ),
-        tryNewSparkMax(5,MotorType.kBrushless, IS_PRACTICE_ROBO )
+        tryNewSparkMax(4,MotorType.kBrushless, !IS_PRACTICE_ROBO ), //need to check on Aisha whether IS_PRACTICE_ROBOT works for inversion
+        tryNewSparkMax(5,MotorType.kBrushless, !IS_PRACTICE_ROBO )
           );
 
       rightDrive = new SpeedControllerGroup(
-        tryNewSparkMax(6,MotorType.kBrushless, !IS_PRACTICE_ROBO ),
-        tryNewSparkMax(7,MotorType.kBrushless, !IS_PRACTICE_ROBO )
+        tryNewSparkMax(6,MotorType.kBrushless, IS_PRACTICE_ROBO ),
+        tryNewSparkMax(7,MotorType.kBrushless, IS_PRACTICE_ROBO )
            );
       
       hatch = tryNewSparkMax (3,MotorType.kBrushed);
@@ -160,7 +160,7 @@ public class RobotMap {
     try {
      
       //initializing team drive motors versus hatch arm motor 
-      motor = (motorType == MotorType.kBrushless) 
+      motor = (motorType == MotorType.kBrushless && false) 
       ? new TeamDriveMotor(port) //if brushed- built in velocity controled
       :  new CANSparkMax(port, motorType); //regular for hatch
     }

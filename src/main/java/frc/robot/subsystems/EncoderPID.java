@@ -28,6 +28,9 @@ private static final double ENCODER_I_VALUE = 0.0;
 private static final double ENCODER_D_VALUE = 0.5;
 private static final boolean temporaryInputHack = true;
 private static final boolean temporaryOutputHack = true;
+public static final double distancePerPulse = 
+(RobotMap.isVictoria())? 3.0 / 228 
+                       : 6.3 / 793; //DEEPSPACE distance
 private double previousSpeed = 0;
 private double previousAcceleration = 0;
 private final double maxAccel = 0.5; 
@@ -38,7 +41,7 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
 
     @Override
     public double pidGet() {
-      double currentSpeed = RobotMap.rightDriveEncoder.getRate();
+      double currentSpeed = (RobotMap.rightDriveEncoder.getRate() + RobotMap.leftDriveEncoder.getRate()) / 2;
       double currentAcceleration = currentSpeed - previousSpeed;
       if (Math.abs(currentAcceleration) > maxAccel && temporaryInputHack){
         if (currentAcceleration < 0) 
@@ -86,7 +89,6 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
    
     
     public EncoderPID (){
-     double distancePerPulse = 6.3 / 793;
       RobotMap.rightDriveEncoder.setDistancePerPulse(distancePerPulse);
     }
    

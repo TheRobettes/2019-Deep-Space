@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
@@ -20,7 +21,11 @@ public abstract class DriveChassis extends PIDSubsystem {
     super(variableName, gyro_P_Value, gyro_I_Value, gyro_D_Value);
     driving.setExpiration(.5);
   }
- public void arcadeDrive(double speed, double rotation ){
+ public void arcadeDrive(double speed, double rotation){
+     if(EncoderPID.distancePerPulse == 1) {
+       System.out.println("Distances: (" + RobotMap.rightDriveEncoder.getDistance() 
+       + " , " + RobotMap.leftDriveEncoder.getDistance() + ") ");
+     }
      driving.arcadeDrive(speed, rotation); 
 }
 

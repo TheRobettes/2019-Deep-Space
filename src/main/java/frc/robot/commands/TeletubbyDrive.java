@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.vision.Snapshot;
 
 /**
@@ -29,7 +30,11 @@ public class TeletubbyDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveChassis.arcadeDrive(-OI.xBox.getY(), OI.xBox.getRawAxis(4));
+    double practiceSpeed = 1;
+    if(RobotMap.IS_PRACTICE_ROBO){
+      practiceSpeed = -OI.secondaryJoystick.getTwist() * 0.25 + 0.75; //changed for demo purposes
+    } 
+    Robot.driveChassis.arcadeDrive(practiceSpeed * -OI.xBox.getY(), OI.xBox.getRawAxis(4)); //changed for demo purposes
 
   }
 

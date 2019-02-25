@@ -13,7 +13,8 @@ public class TeamDriveMotor extends CANSparkMax{
     private CANEncoder m_encoder;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
     public int ourCanID;
-
+    private double directionMultiplier = 1;
+    
     public TeamDriveMotor(int portNumber) {
         super(portNumber, MotorType.kBrushless);
         ourCanID = portNumber;
@@ -54,9 +55,15 @@ public class TeamDriveMotor extends CANSparkMax{
 
     @Override
     public void set(double speed){
-        double velocitySetPoint = speed * maxRPM;
+        double velocitySetPoint = speed * maxRPM * directionMultiplier;
         m_pidController.setReference(velocitySetPoint, ControlType.kVelocity);
         SmartDashboard.putNumber("Spark " + ourCanID, velocitySetPoint );
         SmartDashboard.putNumber("Encoder " + ourCanID, m_encoder.getVelocity());
+    }
+
+    @Override 
+    public void setInverted(boolean invert){
+        super.setInverted(invert);
+        directionMultiplier = (invert)? 1 : -1;
     }
 }
