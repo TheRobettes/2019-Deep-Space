@@ -20,11 +20,12 @@ public class EnVISIONing extends Command {
   private static double driveRate;
   private static boolean shoppingAtTarget = false;
   private static boolean missedTarget = false;
-  private static final double SPEED_LIMIT = 4;
+  private static final double SPEED_LIMIT = 2; //TODO: after testing, raise this to go faster (4)
   private static final double MINIMUM_SPEED = 1;
   private static final double APPROACH_SPEED = (SPEED_LIMIT + MINIMUM_SPEED) / 2;
   private static double turningDirection;
   private static double direction;
+  private static final double MAX_APPROACH_ANGLE = 20;
 
 
   public EnVISIONing(double direction) {
@@ -39,6 +40,7 @@ public class EnVISIONing extends Command {
   @Override
   protected void initialize() {
     Snapshot.isVisionCommandEnabled = true;
+    System.out.println("~Initializing Vision~: " + this.turningDirection);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -61,9 +63,6 @@ public class EnVISIONing extends Command {
 
     //stationary safety code for debugging
     turningDirection = driveRate = 0;
-    
-    driveRate = 0;
-    turningDirection = 0;
 
     if(imageCycles++ < MAX_IMAGE_CYCLES) {
         Robot.driveChassis.compassDrive(driveRate, turningDirection); //what happened to driveRate?
@@ -76,7 +75,7 @@ public class EnVISIONing extends Command {
 }
 
  protected void calcDriveRates() {
-
+  String driveRateStr = "";
   
   //TODO: need to complete when done code
   if(TargetAnalysis.targetWidthPct > 80.0) {
@@ -95,38 +94,65 @@ public class EnVISIONing extends Command {
   double currentRobotHeading = Robot.driveChassis.getDirection();
   double currentVisionHeading = TargetAnalysis.targetAngleFromVision;
   double combinedHeading = currentRobotHeading + currentVisionHeading;
+  double headingCorrection = 0;
 
   if( Math.abs(currentRobotHeading) > 5
       || Math.abs(currentVisionHeading) > 5)
   {
-      //result actions for tacking (spin without movement)
-    //turningDirection += Math.copySign(20, lateralOffset); //plus or minus 20 based on direction of lateralOffset
-    //driveRate = (Math.abs(turningDirection - currentHeading) < 5)? APPROACH_SPEED : 0;
+    headingCorrection = Math.copySign(MAX_APPROACH_ANGLE, combinedHeading);
 
-    //return; if this if statement is executed, don't do anything else in the funtion
+    if(Math.abs(currentRobotHeading) > Math.abs(headingCorrection*0.75)) {
+      this.driveRate = this.APPROACH_SPEED;
+      headingCorrection = -2 * currentVisionHeading;
+
+    }
+
+    /*if( Math.abs(currentVisionHeading) > 5 
+      && Math.abs(combinedHeading) > 5){
+      //result actions for tacking (spin without movement)
+      headingCorrection = Math.copySign(MAX_APPROACH_ANGLE, currentVisionHeading);
+    }
+    else{
+      //actions for slowly approaching the middle/perp of the hatch
+      this.driveRate = this.APPROACH_SPEED;
+      headingCorrection = -2 * currentVisionHeading;
+    } */
+
   }
+
+
 
   else {
-    double headingCorrection = 0; //TODO: turning correction will be based on a factor of currentHeading and expectedOffset. 
-    turningDirection += headingCorrection;
-
-    //double driveRatePct = distance; 
-
-    //want our vision to see where the targets are on our image
-
-   if(Math.abs(headingCorrection) > 10){
-     //driveRatePct = 0;
-      //i want you to turn
-   }
-  
-    //driveRate = driveRatePct * SPEED_LIMIT; 
+    //actions for final centering when near the perp
     
+    //determining a relative speed based on our distance
+    double driveRatePercent = distance * (100.0/1.5) - 100; //y = mx + b
 
-    String visionMessage = " DISTANCE: " + distance 
-    //+ "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
-    + " Drive Rate: " + driveRate + "; Turning Direction: " + turningDirection;
-  Robot.statusMessage(visionMessage);
+    //eliminate over and underdriving
+    if(driveRatePercent > 100.0){
+      driveRatePercent = 100.0;
+
+    }
+
+    if(driveRatePercent < 0.0) {
+      driveRatePercent = 0.0;
+    }
+
+    //convert our percent into a speed
+    driveRate = ((SPEED_LIMIT - MINIMUM_SPEED) * 0.01 * driveRatePercent) + MINIMUM_SPEED;  
+    
+    driveRateStr = " (" + driveRatePercent + "%)";
   }
+     
+  //want our vision to see where the targets are on our image
+  turningDirection += headingCorrection;
+
+  String visionMessage = " DISTANCE: " + distance 
+  //+ "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
+  + "; Drive Rate: " + driveRate + driveRateStr 
+  + "; Turning: " + currentRobotHeading + ", " + currentVisionHeading + ", " + headingCorrection;
+
+  Robot.statusMessage(visionMessage);
  } 
 
  protected double calcDriveRatePct(){

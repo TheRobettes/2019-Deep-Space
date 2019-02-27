@@ -22,7 +22,8 @@ public abstract class DriveChassis extends PIDSubsystem {
     driving.setExpiration(.5);
   }
  public void arcadeDrive(double speed, double rotation){
-     if(EncoderPID.distancePerPulse == 1) {
+     if(EncoderPID.distancePerPulse == 1) 
+     {
        System.out.println("Distances: (" + RobotMap.rightDriveEncoder.getDistance() 
        + " , " + RobotMap.leftDriveEncoder.getDistance() + ") ");
      }

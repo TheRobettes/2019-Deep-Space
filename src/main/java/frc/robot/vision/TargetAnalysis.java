@@ -40,12 +40,16 @@ public class TargetAnalysis {
 
             if (targetTheLeft == null && r.isPositive) {
                 targetTheLeft = r;
-                System.out.println("LeftX " + r.x);
+                //System.out.println("LeftX " + r.x);
             }
 
             else if (targetTheRight == null && !r.isPositive && targetTheLeft != null) {
                 targetTheRight = r;
-                System.out.println("RightX " + r.x);
+                //System.out.println("RightX " + r.x);
+            }
+
+            else {
+                //System.out.println("Skipped Contours " + r.x + " " + r.isPositive);
             }
 
         }
@@ -65,7 +69,6 @@ public class TargetAnalysis {
             double targetXOffset = (long)( 100.0 * (gapCenter - cameraCenterX)) / Snapshot.IMG_WIDTH;
             targetAngleFromVision = FIELD_OF_VIEW_ADJUSTMENT*targetXOffset;
         }
-
     }
 
 }

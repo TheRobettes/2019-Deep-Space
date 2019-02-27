@@ -51,8 +51,8 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
     }
       SmartDashboard.putNumber("Current Speed" , currentSpeed);
 
-      if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
-      || (previousAcceleration > 0 && currentAcceleration < 0)) //when speeding up to speeding down
+      //if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
+      //|| (previousAcceleration > 0 && currentAcceleration < 0)) //when speeding up to speeding down
       
       {
          String encoderMessage = "\t pidSpeed: \t"  + speedPower + "(" + currentSpeed + ")  "
@@ -90,6 +90,9 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
     
     public EncoderPID (){
       RobotMap.rightDriveEncoder.setDistancePerPulse(distancePerPulse);
+      RobotMap.rightDriveEncoder.reset();
+      RobotMap.leftDriveEncoder.reset();
+      RobotMap.leftDriveEncoder.setDistancePerPulse(distancePerPulse); //ha ha ha *whomp ok i know im weird
     }
    
     public void pidSpeedCorrection(double PIDOutput){

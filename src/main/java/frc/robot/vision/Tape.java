@@ -16,7 +16,7 @@ public class Tape extends Rect implements Comparable {
     public int compareTo(Object otherObject) {
         Tape otherTape = (Tape) otherObject; // treat "otherObject" like a "Tape" type
         // Calculating negative whenever "otherTape" is to the left of "this"
-        return otherTape.x - this.x;
+        return  this.x - otherTape.x; //otherTape.x - this.x;
     }
     private boolean findSlope(MatOfPoint mop) {
         int rightMostX = 0;
@@ -32,8 +32,8 @@ public class Tape extends Rect implements Comparable {
         }
         int verticalMidpoint = (this.height/2) + this.y;
         boolean calculatedSlope = rightMostY < verticalMidpoint;
-        System.out.println("FindSlopeDataPoints: (" + rightMostX + " , " + rightMostY + ") "
-         + verticalMidpoint + " " + calculatedSlope);
+       // System.out.println("FindSlopeDataPoints: (" + rightMostX + " , " + rightMostY + ") "
+        // + verticalMidpoint + " " + calculatedSlope);
         return calculatedSlope;
     }
 }

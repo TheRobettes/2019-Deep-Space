@@ -138,6 +138,8 @@ public class RobotMap {
     
     if(isVictoria()){
       rightDriveEncoder.setReverseDirection(true);
+      leftDriveEncoder.setReverseDirection(true);
+
     }
   }
   public static boolean isKimmie(){
