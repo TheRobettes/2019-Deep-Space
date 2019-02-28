@@ -25,6 +25,7 @@ public class BasicMovement extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    targetSubsystem.activate();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -43,6 +44,7 @@ public class BasicMovement extends Command {
   @Override
   protected void end() {
     targetSubsystem.move(0);
+    targetSubsystem.deactivate();
   }
 
   // Called when another command which requires one or more of the same

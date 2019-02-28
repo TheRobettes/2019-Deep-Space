@@ -36,6 +36,7 @@ public class OI {
       buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
     }
     
+    //Aisha DEEPSPACE
     
     buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
 
@@ -83,7 +84,7 @@ public class OI {
     }
 
 public static Command newManualHatch(double power){
-    Command hatchCommand = new BasicMovement(Robot.manualHatch, power) {
+    Command hatchCommand = new BasicMovement(Robot.hatch, power) {
       @Override
       protected void execute(){
         super.execute();

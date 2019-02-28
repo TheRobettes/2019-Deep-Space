@@ -9,16 +9,21 @@ package frc.robot.subsystems;
 
 
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * Add your docs here.
  */
-public class BasicController extends Subsystem {
-  private SpeedController motor;
+public abstract class BasicController extends PIDSubsystem {
+  protected SpeedController motor;
   
-public BasicController(SpeedController motor){
-  this.motor = motor;
+/*public BasicController(SpeedController motor){
+   this.motor = motor;
+}*/
+
+public BasicController( String subsystemName, double pGain, double iGain, double  dGain){
+   super(subsystemName, pGain, iGain, dGain);
 }
 
   // Put methods for controlling this subsystem
@@ -32,4 +37,8 @@ public BasicController(SpeedController motor){
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  public abstract void activate();
+
+  public abstract void deactivate();
 }

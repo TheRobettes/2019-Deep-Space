@@ -19,8 +19,7 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class HatchLifter extends PIDSubsystem {
-  private final SpeedController hatchmotor = RobotMap.hatch;
+public class HatchLifter extends BasicController {
   private static boolean waxOn = false;
 
  //gotten through testing- converts volts to degrees
@@ -38,6 +37,7 @@ public class HatchLifter extends PIDSubsystem {
   public HatchLifter() {
     // Intert a subsystem name and PID values here
     super("SubsystemName", 0.16, 0.15, 0.15); //TODO: Correct PID values //previous was 0.015, 0, 0.07
+    this.motor = RobotMap.hatch;
 
     // determine tolerence (accuracy) for each stage
     this.setAbsoluteTolerance(5);
@@ -54,8 +54,7 @@ public class HatchLifter extends PIDSubsystem {
  
   @Override
   public void enable() {
-    brakePiston.set(!waxOn);
-    System.out.println(" brake off" );
+   activate();
     super.enable();
 
   }
@@ -75,15 +74,25 @@ public class HatchLifter extends PIDSubsystem {
 
   @Override
   protected void usePIDOutput(double speed) {
-    hatchmotor.set(speed);
+    motor.set(speed);
 
-    Robot.statusMessage("   " + this.getPosition() + "  --> " + speed);
+    //Robot.statusMessage("   " + this.getPosition() + "  --> " + speed);
   }
 
   @Override
   public void disable() {
-    brakePiston.set(waxOn);
-    System.out.println(" brake on ( at " + getPosition() + ")");
+    deactivate();
     super.disable();
+  }
+
+  @Override
+  public  void activate(){
+    brakePiston.set(!waxOn);
+    Robot.statusMessage("  brake off ( at " + getPosition() + ")");
+  }
+
+  public  void deactivate(){
+    brakePiston.set(waxOn);
+    Robot.statusMessage(" brake on ( at " + getPosition() + ")");
   }
 }
