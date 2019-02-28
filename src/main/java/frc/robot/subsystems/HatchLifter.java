@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
@@ -20,7 +21,7 @@ import frc.robot.RobotMap;
  */
 public class HatchLifter extends PIDSubsystem {
   private final SpeedController hatchmotor = RobotMap.hatch;
-  private static boolean waxOn = true;
+  private static boolean waxOn = false;
 
  //gotten through testing- converts volts to degrees
   private static double fullRange = 2000;
@@ -36,8 +37,14 @@ public class HatchLifter extends PIDSubsystem {
 
   public HatchLifter() {
     // Intert a subsystem name and PID values here
-    super("SubsystemName", 0.02, 0.0, 0.07); //TODO: Correct PID values //previous was 0.015, 0, 0.07
-  
+    super("SubsystemName", 0.16, 0.15, 0.15); //TODO: Correct PID values //previous was 0.015, 0, 0.07
+
+    // determine tolerence (accuracy) for each stage
+    this.setAbsoluteTolerance(5);
+
+    // start with brake ON. 
+    brakePiston.set(waxOn);
+
   }
 
   public static double getHatchPosition() {
@@ -70,12 +77,13 @@ public class HatchLifter extends PIDSubsystem {
   protected void usePIDOutput(double speed) {
     hatchmotor.set(speed);
 
+    Robot.statusMessage("   " + this.getPosition() + "  --> " + speed);
   }
 
   @Override
   public void disable() {
     brakePiston.set(waxOn);
-    System.out.println(" brake on");
+    System.out.println(" brake on ( at " + getPosition() + ")");
     super.disable();
   }
 }

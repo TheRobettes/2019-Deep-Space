@@ -162,9 +162,9 @@ public class RobotMap {
     try {
      
       //initializing team drive motors versus hatch arm motor 
-      motor = (motorType == MotorType.kBrushless && false) 
-      ? new TeamDriveMotor(port) //if brushed- built in velocity controled
-      :  new CANSparkMax(port, motorType); //regular for hatch
+      motor = (motorType == MotorType.kBrushless && port > 5 && false ) 
+        ? new TeamDriveMotor(port) //if brushed- built in velocity controled
+        : new CANSparkMax(port, motorType); //regular for hatch
     }
 
     //  ... if that failed for any reason, do next-new statement as an fault-correction.

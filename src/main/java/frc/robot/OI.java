@@ -41,13 +41,13 @@ public class OI {
 
     //non-PID hatch movement
     buttonHold(secondaryJoystick, 9, newManualHatch(-0.6)); //manual hatch down
-    buttonHold(secondaryJoystick, 8, newManualHatch(0.8)); //manual hatch up
+    buttonHold(secondaryJoystick, 8, newManualHatch(0.95)); //manual hatch up
   
      //PID based hatch-levels...
       //hatchButton
-      buttonHold(secondaryJoystick, 4, new MoveHatchLevel(20));
-      buttonHold(secondaryJoystick, 3, new MoveHatchLevel(90));
-      buttonHold(secondaryJoystick, 5, new MoveHatchLevel(145));
+      buttonPress(secondaryJoystick, 4, new MoveHatchLevel(20  ));
+      buttonPress(secondaryJoystick, 3, new MoveHatchLevel(90 - 22 ));
+      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(140 + 10 ));
     
     //Secondary Joystick Buttons
     //extendButton
