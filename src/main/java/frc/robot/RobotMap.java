@@ -62,6 +62,8 @@ public class RobotMap {
 
   public RobotMap(String robotID){
 
+    System.out.println("starting RobotMap for " + robotID);
+    
     int leftDriveEncoderPort = 0, rightDriveEncoderPort = 2;
 
     if (robotID.equals (KIMMIE)){

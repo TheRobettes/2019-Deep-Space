@@ -36,11 +36,16 @@ public class OI {
       buttonHold(secondaryJoystick, 2, new DrivingTheLine(CompassDriving.noGyro, 2));
     }
     
-    //Aisha DEEPSPACE
+    
     
     buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
 
-    //non-PID hatch movement
+    if(!(RobotMap.isKimmie()||RobotMap.isVictoria())){
+    
+
+  //Aisha DEEPSPACE
+    
+  //non-PID hatch movement
     buttonHold(secondaryJoystick, 9, newManualHatch(-0.6)); //manual hatch down
     buttonHold(secondaryJoystick, 8, newManualHatch(0.95)); //manual hatch up
   
@@ -48,14 +53,14 @@ public class OI {
       //hatchButton
       buttonPress(secondaryJoystick, 4, new MoveHatchLevel(20  ));
       buttonPress(secondaryJoystick, 3, new MoveHatchLevel(90 - 22 ));
-      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(140 + 10 ));
+      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(140 + 20 ));
     
     //Secondary Joystick Buttons
     //extendButton
     buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, true)); //hatch open
     //retractButton
     buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, false)); // hatch close
-  
+    }
 
 //DriveChassis calibration testing routines
     //northButton

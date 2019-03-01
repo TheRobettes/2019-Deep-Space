@@ -43,6 +43,7 @@ public class HatchLifter extends BasicController {
     this.setAbsoluteTolerance(5);
 
     // start with brake ON. 
+    if(brakePiston!=null)
     brakePiston.set(waxOn);
 
   }
@@ -74,6 +75,11 @@ public class HatchLifter extends BasicController {
 
   @Override
   protected void usePIDOutput(double speed) {
+
+    // apply a dampen-speed affect to all downward moves.
+    if (speed < 0 )
+      speed *= .4;
+
     motor.set(speed);
 
     //Robot.statusMessage("   " + this.getPosition() + "  --> " + speed);
