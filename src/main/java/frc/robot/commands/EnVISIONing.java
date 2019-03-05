@@ -25,7 +25,8 @@ public class EnVISIONing extends Command {
   private static final double APPROACH_SPEED = (SPEED_LIMIT + MINIMUM_SPEED) / 2;
   private static double turningDirection;
   private static double direction;
-  private static final double MAX_APPROACH_ANGLE = 20;
+  private static final double MAX_APPROACH_OVERSHOOT = 10;
+  private static final double MINIMUM_APPROACH_ANGLE = 15;
 
 
   public EnVISIONing(double direction) {
@@ -39,6 +40,7 @@ public class EnVISIONing extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.driveChassis.enable();
     Snapshot.isVisionCommandEnabled = true;
     System.out.println("~Initializing Vision~: " + this.turningDirection);
   }
@@ -55,6 +57,7 @@ public class EnVISIONing extends Command {
 
       if(isTracking()) {  
         calcDriveRates();
+        Robot.statusMessage("drive rate : " + driveRate);
       }
 
       else {
@@ -62,7 +65,7 @@ public class EnVISIONing extends Command {
       }
 
     //stationary safety code for debugging
-    turningDirection = driveRate = 0;
+    //turningDirection = driveRate = 0;
 
     if(imageCycles++ < MAX_IMAGE_CYCLES) {
         Robot.driveChassis.compassDrive(driveRate, turningDirection); //what happened to driveRate?
@@ -88,7 +91,7 @@ public class EnVISIONing extends Command {
   }
   
   //distance: 1.2083 = 66.25% width; distance: 5.667 = 13.125%
-  double distance = (-0.0845*TargetAnalysis.targetWidthPct) + 6.776; 
+  double distance = (-0.0845*TargetAnalysis.targetWidthPct) + 4.776; 
 
   //TODO: likely will have to be adjusted by a this.-targetheading-
   double currentRobotHeading = Robot.driveChassis.getDirection();
@@ -96,27 +99,18 @@ public class EnVISIONing extends Command {
   double combinedHeading = currentRobotHeading + currentVisionHeading;
   double headingCorrection = 0;
 
-  if( Math.abs(currentRobotHeading) > 5
-      || Math.abs(currentVisionHeading) > 5)
+  if( Math.abs(combinedHeading) > 5)
   {
-    headingCorrection = Math.copySign(MAX_APPROACH_ANGLE, combinedHeading);
+    headingCorrection = combinedHeading + Math.copySign(MAX_APPROACH_OVERSHOOT, combinedHeading);
 
-    if(Math.abs(currentRobotHeading) > Math.abs(headingCorrection*0.75)) {
-      this.driveRate = this.APPROACH_SPEED;
-      headingCorrection = -2 * currentVisionHeading;
+    if(Math.abs(currentRobotHeading) > Math.abs(headingCorrection) - MINIMUM_APPROACH_ANGLE) {
+      double crossingTheLineAngle = headingCorrection - currentRobotHeading;
+      double driveRateFactor = -crossingTheLineAngle * (1.0/MINIMUM_APPROACH_ANGLE) + 1.0; //y = mx + b
+      this.driveRate = this.APPROACH_SPEED * driveRateFactor;
+
+    driveRateStr = " (" + (driveRateFactor * 100.0) + "%)";
 
     }
-
-    /*if( Math.abs(currentVisionHeading) > 5 
-      && Math.abs(combinedHeading) > 5){
-      //result actions for tacking (spin without movement)
-      headingCorrection = Math.copySign(MAX_APPROACH_ANGLE, currentVisionHeading);
-    }
-    else{
-      //actions for slowly approaching the middle/perp of the hatch
-      this.driveRate = this.APPROACH_SPEED;
-      headingCorrection = -2 * currentVisionHeading;
-    } */
 
   }
 
@@ -172,6 +166,7 @@ public class EnVISIONing extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveChassis.disable();
     Snapshot.isVisionCommandEnabled = false;
   }
 
