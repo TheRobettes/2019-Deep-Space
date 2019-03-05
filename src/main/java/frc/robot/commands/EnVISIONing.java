@@ -9,6 +9,8 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.vision.Snapshot;
 import frc.robot.vision.TargetAnalysis;
@@ -27,22 +29,35 @@ public class EnVISIONing extends Command {
   private static double direction;
   private static final double MAX_APPROACH_OVERSHOOT = 10;
   private static final double MINIMUM_APPROACH_ANGLE = 15;
+  private static SendableChooser<Integer> pickWhichHatch = new SendableChooser<>();
 
-
-  public EnVISIONing(double direction) {
-    this.direction = direction;
-
+  public EnVISIONing(){  //double direction) {
+    this.direction = -1;
+    
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.driveChassis);
+
+    //choices on our dumb dashboard
+    pickWhichHatch.setDefaultOption("Cargo front", new Integer(0));
+    pickWhichHatch.addOption("Cargo Left", new Integer(90)); 
+    pickWhichHatch.addOption("Cargo Right", new Integer(-90));
+    pickWhichHatch.addOption("Loading Station", new Integer(180));
+    pickWhichHatch.addOption("Left Rocket close", new Integer(-60));
+    pickWhichHatch.addOption("Right Rocket close", new Integer(60));
+    pickWhichHatch.addOption("Left Rocket far", new Integer(-120));
+    pickWhichHatch.addOption("Right Rocket close", new Integer(120));
+    SmartDashboard.putData("Auto mode", pickWhichHatch);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    direction = turningDirection = pickWhichHatch.getSelected().hashCode();
     Robot.driveChassis.enable();
     Snapshot.isVisionCommandEnabled = true;
-    System.out.println("~Initializing Vision~: " + this.turningDirection);
+    System.out.println("~Initializing Vision~: " + direction);
+
   }
 
   // Called repeatedly when this Command is scheduled to run
