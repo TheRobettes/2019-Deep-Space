@@ -55,7 +55,7 @@ public class EnVISIONing extends Command {
   protected void initialize() {
     direction = turningDirection = pickWhichHatch.getSelected().hashCode();
     Robot.driveChassis.enable();
-    Snapshot.isVisionCommandEnabled = true;
+    //Snapshot.isVisionCommandEnabled = true;
     System.out.println("~Initializing Vision~: " + direction);
 
   }
@@ -114,25 +114,28 @@ public class EnVISIONing extends Command {
   double combinedHeading = currentRobotHeading + currentVisionHeading;
   double headingCorrection = 0;
 
-  if( Math.abs(combinedHeading) > 5)
+  String visionMessage = null;
+  if(distance < 2.3){ //if we are really close and need to shut off 
+    visionMessage = "we hit the bulls eye";
+  }
+  else if( Math.abs(combinedHeading) > 5)
   {
+    //if we are not on the line
     headingCorrection = combinedHeading + Math.copySign(MAX_APPROACH_OVERSHOOT, combinedHeading);
 
     if(Math.abs(currentRobotHeading) > Math.abs(headingCorrection) - MINIMUM_APPROACH_ANGLE) {
       double crossingTheLineAngle = headingCorrection - currentRobotHeading;
       double driveRateFactor = -crossingTheLineAngle * (1.0/MINIMUM_APPROACH_ANGLE) + 1.0; //y = mx + b
-      this.driveRate = this.APPROACH_SPEED * driveRateFactor;
-
+      this.driveRate = (driveRateFactor > 1) ? this.APPROACH_SPEED : this.APPROACH_SPEED * driveRateFactor;
+      //TODO: fix from going contours to no contours- it drives negative 
     driveRateStr = " (" + (driveRateFactor * 100.0) + "%)";
 
     }
 
   }
 
-
-
   else {
-    //actions for final centering when near the perp
+    //actions for final centering when near the perpendicular line
     
     //determining a relative speed based on our distance
     double driveRatePercent = distance * (100.0/1.5) - 100; //y = mx + b
@@ -156,10 +159,11 @@ public class EnVISIONing extends Command {
   //want our vision to see where the targets are on our image
   turningDirection += headingCorrection;
 
-  String visionMessage = " DISTANCE: " + distance 
-  //+ "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
-  + "; Drive Rate: " + driveRate + driveRateStr 
-  + "; Turning: " + currentRobotHeading + ", " + currentVisionHeading + ", " + headingCorrection;
+  if (visionMessage == null) 
+    visionMessage = " DISTANCE: " + distance 
+    //+ "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
+    + "; Drive Rate: " + driveRate + driveRateStr 
+    + "; Turning: " + currentRobotHeading + ", " + currentVisionHeading + ", " + headingCorrection;
 
   Robot.statusMessage(visionMessage);
  } 
@@ -182,7 +186,7 @@ public class EnVISIONing extends Command {
   @Override
   protected void end() {
     Robot.driveChassis.disable();
-    Snapshot.isVisionCommandEnabled = false;
+    //Snapshot.isVisionCommandEnabled = false;
   }
 
   // Called when another command which requires one or more of the same
