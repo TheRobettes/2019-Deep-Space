@@ -7,6 +7,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
 public class TeamDriveMotor extends CANSparkMax{
     private CANPIDController m_pidController;
@@ -57,13 +58,19 @@ public class TeamDriveMotor extends CANSparkMax{
     public void set(double speed){
         double velocitySetPoint = speed * maxRPM * directionMultiplier;
         m_pidController.setReference(velocitySetPoint, ControlType.kVelocity);
-        SmartDashboard.putNumber("Spark " + ourCanID, velocitySetPoint );
+        /*SmartDashboard.putNumber("Spark " + ourCanID, velocitySetPoint );
         SmartDashboard.putNumber("Encoder " + ourCanID, m_encoder.getVelocity());
+        *
+        */
+        double velocity = m_encoder.getVelocity();
+        if (Math.abs(speed) > .1 || Math.abs(velocity) > 100 )
+            Robot.statusMessage("MAX[" + ourCanID + "] " + speed + " --> " + velocity );
+        
     }
 
     @Override 
     public void setInverted(boolean invert){
-        super.setInverted(invert);
+        //super.setInverted(invert);
         directionMultiplier = (invert)? 1 : -1;
     }
 }

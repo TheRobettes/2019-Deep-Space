@@ -40,10 +40,11 @@ public class OI {
     
     buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
 
-    if(!(RobotMap.isKimmie()||RobotMap.isVictoria())){
+    Robot.statusMessage("OI-command-buttons pretest... " + RobotMap.isKimmie() + RobotMap.isVictoria());
+    if((!RobotMap.isKimmie()) && (!RobotMap.isVictoria()) ) {
     
 
-  //Aisha DEEPSPACE
+       Robot.statusMessage("Creating DEEPSPACE/Aisha command buttons...");
     
   //non-PID hatch movement
     buttonHold(secondaryJoystick, 9, newManualHatch(-0.6)); //manual hatch down

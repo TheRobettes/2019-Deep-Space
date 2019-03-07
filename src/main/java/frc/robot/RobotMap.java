@@ -37,7 +37,7 @@ public class RobotMap {
   public static final String DEEPSPACE = "Aisha";
   
   private static boolean ISKIMMIE = false;
-  private static boolean ISVICTORIA = true;
+  private static boolean ISVICTORIA = false;
 
   //currently speedcontrollers
   public static SpeedController leftDrive;
@@ -62,6 +62,8 @@ public class RobotMap {
 
   public RobotMap(String robotID){
 
+    if (robotID.equals(DEEPSPACE))
+      robotID += (IS_PRACTICE_ROBO) ? " (practice)" : " (COMP!)" ; 
     System.out.println("starting RobotMap for " + robotID);
     
     int leftDriveEncoderPort = 0, rightDriveEncoderPort = 2;
@@ -113,8 +115,8 @@ public class RobotMap {
 
       //  .... NEW WAY !! ...
       leftDrive = new SpeedControllerGroup(
-        tryNewSparkMax(4,MotorType.kBrushless, !IS_PRACTICE_ROBO ), //need to check on Aisha whether IS_PRACTICE_ROBOT works for inversion
-        tryNewSparkMax(5,MotorType.kBrushless, !IS_PRACTICE_ROBO )
+        tryNewSparkMax(4,MotorType.kBrushless, false ), //need to check on Aisha whether IS_PRACTICE_ROBOT works for inversion
+        tryNewSparkMax(15,MotorType.kBrushless, false )
           );
 
       rightDrive = new SpeedControllerGroup(
@@ -163,10 +165,25 @@ public class RobotMap {
     // First, attempt connecting to an expected CANID...
     try {
      
+      /*
+      * Check for Optional call-values to signal missing CAN motors...
+      *          (to review what happens with try/catch statements)
+      *
+      if (port > 10)
+        throw new Exception("Skipping " + port);
+      */
+
       //initializing team drive motors versus hatch arm motor 
-      motor = (motorType == MotorType.kBrushless && port > 5 && false ) 
-        ? new TeamDriveMotor(port) //if brushed- built in velocity controled
-        : new CANSparkMax(port, motorType); //regular for hatch
+      motor = 
+        /*  retain, as a usage-history regarding how ramp-up rates
+        *     could be applied ... notably if there wasn't a conversion
+        *           from belts to chains...
+        *
+        ( motorType == MotorType.kBrushless && port <= 5 ) 
+            ? new TeamDriveMotor(port) //if brushed- built in velocity controled
+            :  
+        */
+         new CANSparkMax(port, motorType); //regular for hatch
     }
 
     //  ... if that failed for any reason, do next-new statement as an fault-correction.
