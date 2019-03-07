@@ -33,6 +33,17 @@ public class TargetAnalysis {
         ArrayList<Tape> rectangles = Snapshot.getContours();
         int count = rectangles.size();
 
+        if(count == 1){
+            Tape r = rectangles.get(0);
+            targetWidthPct = 100.0 * (2 * r.width) / Snapshot.IMG_WIDTH;
+            double gapCenter = (r.isPositive) ?r.x + (r.width * 2): r.x - (r.width * 2);
+            
+            double targetXOffset = (long)( 100.0 * (gapCenter - cameraCenterX)) / Snapshot.IMG_WIDTH;
+            targetAngleFromVision = FIELD_OF_VIEW_ADJUSTMENT*targetXOffset;
+            foundTarget = true;
+            return;
+        }
+
         foundTarget = false;
         Collections.sort(rectangles);
         for (int x = 0; x < count; x++) {

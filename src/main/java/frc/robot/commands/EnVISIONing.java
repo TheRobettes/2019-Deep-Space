@@ -9,6 +9,8 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.vision.Snapshot;
 import frc.robot.vision.TargetAnalysis;
@@ -25,22 +27,37 @@ public class EnVISIONing extends Command {
   private static final double APPROACH_SPEED = (SPEED_LIMIT + MINIMUM_SPEED) / 2;
   private static double turningDirection;
   private static double direction;
-  private static final double MAX_APPROACH_ANGLE = 20;
+  private static final double MAX_APPROACH_OVERSHOOT = 10;
+  private static final double MINIMUM_APPROACH_ANGLE = 15;
+  private static SendableChooser<Integer> pickWhichHatch = new SendableChooser<>();
 
-
-  public EnVISIONing(double direction) {
-    this.direction = direction;
-
+  public EnVISIONing(){  //double direction) {
+    this.direction = -1;
+    
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.driveChassis);
+
+    //choices on our dumb dashboard
+    pickWhichHatch.setDefaultOption("Cargo front", new Integer(0));
+    pickWhichHatch.addOption("Cargo Left", new Integer(90)); 
+    pickWhichHatch.addOption("Cargo Right", new Integer(-90));
+    pickWhichHatch.addOption("Loading Station", new Integer(180));
+    pickWhichHatch.addOption("Left Rocket close", new Integer(-60));
+    pickWhichHatch.addOption("Right Rocket close", new Integer(60));
+    pickWhichHatch.addOption("Left Rocket far", new Integer(-120));
+    pickWhichHatch.addOption("Right Rocket close", new Integer(120));
+    SmartDashboard.putData("Auto mode", pickWhichHatch);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Snapshot.isVisionCommandEnabled = true;
-    System.out.println("~Initializing Vision~: " + this.turningDirection);
+    direction = turningDirection = pickWhichHatch.getSelected().hashCode();
+    Robot.driveChassis.enable();
+    //Snapshot.isVisionCommandEnabled = true;
+    System.out.println("~Initializing Vision~: " + direction);
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -55,6 +72,7 @@ public class EnVISIONing extends Command {
 
       if(isTracking()) {  
         calcDriveRates();
+        Robot.statusMessage("drive rate : " + driveRate);
       }
 
       else {
@@ -62,7 +80,7 @@ public class EnVISIONing extends Command {
       }
 
     //stationary safety code for debugging
-    turningDirection = driveRate = 0;
+    //turningDirection = driveRate = 0;
 
     if(imageCycles++ < MAX_IMAGE_CYCLES) {
         Robot.driveChassis.compassDrive(driveRate, turningDirection); //what happened to driveRate?
@@ -88,7 +106,7 @@ public class EnVISIONing extends Command {
   }
   
   //distance: 1.2083 = 66.25% width; distance: 5.667 = 13.125%
-  double distance = (-0.0845*TargetAnalysis.targetWidthPct) + 6.776; 
+  double distance = (-0.0845*TargetAnalysis.targetWidthPct) + 4.776; 
 
   //TODO: likely will have to be adjusted by a this.-targetheading-
   double currentRobotHeading = Robot.driveChassis.getDirection();
@@ -96,34 +114,28 @@ public class EnVISIONing extends Command {
   double combinedHeading = currentRobotHeading + currentVisionHeading;
   double headingCorrection = 0;
 
-  if( Math.abs(currentRobotHeading) > 5
-      || Math.abs(currentVisionHeading) > 5)
+  String visionMessage = null;
+  if(distance < 2.3){ //if we are really close and need to shut off 
+    visionMessage = "we hit the bulls eye";
+  }
+  else if( Math.abs(combinedHeading) > 5)
   {
-    headingCorrection = Math.copySign(MAX_APPROACH_ANGLE, combinedHeading);
+    //if we are not on the line
+    headingCorrection = combinedHeading + Math.copySign(MAX_APPROACH_OVERSHOOT, combinedHeading);
 
-    if(Math.abs(currentRobotHeading) > Math.abs(headingCorrection*0.75)) {
-      this.driveRate = this.APPROACH_SPEED;
-      headingCorrection = -2 * currentVisionHeading;
+    if(Math.abs(currentRobotHeading) > Math.abs(headingCorrection) - MINIMUM_APPROACH_ANGLE) {
+      double crossingTheLineAngle = headingCorrection - currentRobotHeading;
+      double driveRateFactor = -crossingTheLineAngle * (1.0/MINIMUM_APPROACH_ANGLE) + 1.0; //y = mx + b
+      this.driveRate = (driveRateFactor > 1) ? this.APPROACH_SPEED : this.APPROACH_SPEED * driveRateFactor;
+      //TODO: fix from going contours to no contours- it drives negative 
+    driveRateStr = " (" + (driveRateFactor * 100.0) + "%)";
 
     }
-
-    /*if( Math.abs(currentVisionHeading) > 5 
-      && Math.abs(combinedHeading) > 5){
-      //result actions for tacking (spin without movement)
-      headingCorrection = Math.copySign(MAX_APPROACH_ANGLE, currentVisionHeading);
-    }
-    else{
-      //actions for slowly approaching the middle/perp of the hatch
-      this.driveRate = this.APPROACH_SPEED;
-      headingCorrection = -2 * currentVisionHeading;
-    } */
 
   }
 
-
-
   else {
-    //actions for final centering when near the perp
+    //actions for final centering when near the perpendicular line
     
     //determining a relative speed based on our distance
     double driveRatePercent = distance * (100.0/1.5) - 100; //y = mx + b
@@ -147,10 +159,11 @@ public class EnVISIONing extends Command {
   //want our vision to see where the targets are on our image
   turningDirection += headingCorrection;
 
-  String visionMessage = " DISTANCE: " + distance 
-  //+ "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
-  + "; Drive Rate: " + driveRate + driveRateStr 
-  + "; Turning: " + currentRobotHeading + ", " + currentVisionHeading + ", " + headingCorrection;
+  if (visionMessage == null) 
+    visionMessage = " DISTANCE: " + distance 
+    //+ "; TARGET X OFFSET: " + TargetAnalysis.targetXOffset
+    + "; Drive Rate: " + driveRate + driveRateStr 
+    + "; Turning: " + currentRobotHeading + ", " + currentVisionHeading + ", " + headingCorrection;
 
   Robot.statusMessage(visionMessage);
  } 
@@ -172,7 +185,8 @@ public class EnVISIONing extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Snapshot.isVisionCommandEnabled = false;
+    Robot.driveChassis.disable();
+    //Snapshot.isVisionCommandEnabled = false;
   }
 
   // Called when another command which requires one or more of the same

@@ -38,7 +38,7 @@ public class OI {
     
     
     
-    buttonHold(secondaryJoystick, 1, new EnVISIONing(0));
+    buttonHold(secondaryJoystick, 1, new EnVISIONing());
 
     Robot.statusMessage("OI-command-buttons pretest... " + RobotMap.isKimmie() + RobotMap.isVictoria());
     if((!RobotMap.isKimmie()) && (!RobotMap.isVictoria()) ) {

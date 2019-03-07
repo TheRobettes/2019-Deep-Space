@@ -38,7 +38,7 @@ public class Snapshot {
     private static CvSink cvSink1 = null;
     private static GripPipeline pipeline = new GripPipeline();
     public static boolean isImageReady = false;
-    public static boolean isVisionCommandEnabled = false;
+    public static boolean isVisionCommandEnabled = true;
     private static ArrayList<Tape> rectangles = new ArrayList<Tape>();
     static final Scalar WHITE = new Scalar(255, 255, 255);
 
