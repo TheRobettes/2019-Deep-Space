@@ -116,7 +116,7 @@ public class RobotMap {
       //  .... NEW WAY !! ...
       leftDrive = new SpeedControllerGroup(
         tryNewSparkMax(4,MotorType.kBrushless, false ), //need to check on Aisha whether IS_PRACTICE_ROBOT works for inversion
-        tryNewSparkMax(15,MotorType.kBrushless, false )
+        tryNewSparkMax(5,MotorType.kBrushless, false )
           );
 
       rightDrive = new SpeedControllerGroup(
