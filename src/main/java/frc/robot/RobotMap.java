@@ -85,7 +85,7 @@ public class RobotMap {
       ISVICTORIA = true;
 
       leftDriveEncoderPort = 4;
-      rightDriveEncoderPort = 2;
+      rightDriveEncoderPort = 6;
 
         SpeedController leftFront = new Spark(0);
         leftFront.setInverted(false);
@@ -116,7 +116,7 @@ public class RobotMap {
       //  .... NEW WAY !! ...
       leftDrive = new SpeedControllerGroup(
         tryNewSparkMax(4,MotorType.kBrushless, false ), //need to check on Aisha whether IS_PRACTICE_ROBOT works for inversion
-        tryNewSparkMax(15,MotorType.kBrushless, false )
+        tryNewSparkMax(5,MotorType.kBrushless, false )
           );
 
       rightDrive = new SpeedControllerGroup(
@@ -175,15 +175,9 @@ public class RobotMap {
 
       //initializing team drive motors versus hatch arm motor 
       motor = 
-        /*  retain, as a usage-history regarding how ramp-up rates
-        *     could be applied ... notably if there wasn't a conversion
-        *           from belts to chains...
-        *
-        ( motorType == MotorType.kBrushless && port <= 5 ) 
-            ? new TeamDriveMotor(port) //if brushed- built in velocity controled
-            :  
-        */
-         new CANSparkMax(port, motorType); //regular for hatch
+        ( motorType == MotorType.kBrushless)  
+            ? new TeamDriveMotor(port) //if brushed- Use Spark-MAX for velocity control
+            : new CANSparkMax(port, motorType); // else - regular for hatch
     }
 
     //  ... if that failed for any reason, do next-new statement as an fault-correction.
