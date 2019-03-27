@@ -51,9 +51,8 @@ private final PIDController encoderPID = new PIDController(ENCODER_P_VALUE, ENCO
     }
       SmartDashboard.putNumber("Current Speed" , currentSpeed);
 
-      //if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
-      //|| (previousAcceleration > 0 && currentAcceleration < 0)) //when speeding up to speeding down
-      
+      if ((previousAcceleration < 0 && currentAcceleration > 0) //when speeding down to speeding up 
+        || (previousAcceleration > 0 && currentAcceleration < 0)) //when speeding up to speeding down
       {
          String encoderMessage = "\t pidSpeed: \t"  + currentSpeed + " --> " + speedPower + ")  "
          + " Gyro angle: " + angleOffset + " --> " + rotationPower;

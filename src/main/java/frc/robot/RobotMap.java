@@ -115,13 +115,13 @@ public class RobotMap {
 
       //  .... NEW WAY !! ...
       leftDrive = new SpeedControllerGroup(
-        tryNewSparkMax(4,MotorType.kBrushless, false ), //need to check on Aisha whether IS_PRACTICE_ROBOT works for inversion
-        tryNewSparkMax(5,MotorType.kBrushless, false )
+        tryNewSparkMax(4,MotorType.kBrushless, !IS_PRACTICE_ROBO ), 
+        tryNewSparkMax(5,MotorType.kBrushless, !IS_PRACTICE_ROBO)
           );
 
       rightDrive = new SpeedControllerGroup(
-        tryNewSparkMax(6,MotorType.kBrushless, IS_PRACTICE_ROBO ),
-        tryNewSparkMax(7,MotorType.kBrushless, IS_PRACTICE_ROBO )
+        tryNewSparkMax(6,MotorType.kBrushless, (IS_PRACTICE_ROBO)? IS_PRACTICE_ROBO: !IS_PRACTICE_ROBO ), //Aisha = !IS_PRACTICE_ROBO
+        tryNewSparkMax(7,MotorType.kBrushless, (IS_PRACTICE_ROBO)? IS_PRACTICE_ROBO: !IS_PRACTICE_ROBO )
            );
       
       hatch = tryNewSparkMax (3,MotorType.kBrushed);
@@ -129,6 +129,9 @@ public class RobotMap {
       gaston = new Solenoid(1); 
       brake = new Solenoid (2);
       gastonUpAndDown = new Solenoid(3);
+
+      
+
     
     }
 

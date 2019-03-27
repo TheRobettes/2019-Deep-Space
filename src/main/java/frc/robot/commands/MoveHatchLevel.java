@@ -12,6 +12,7 @@ import frc.robot.Robot;
 
 public class MoveHatchLevel extends Command {
   private double targetHeight;
+  private double previousAngle;
 
   public MoveHatchLevel(double targetHeight) {
     requires(Robot.hatch);
@@ -24,18 +25,33 @@ public class MoveHatchLevel extends Command {
   @Override
   protected void initialize() {
     Robot.hatch.enable();
+    previousAngle = Robot.hatch.getPosition();
 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(targetHeight == 120 && previousAngle <= 108) {
+      targetHeight = 115;
+    }
+
+    else if(targetHeight == 120 && previousAngle >= 131) {
+      targetHeight = 124;
+
+    }
+
     Robot.hatch.setSetpoint(targetHeight);
+
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(Robot.hatch.onTarget())
+      previousAngle = targetHeight;
+
     return Robot.hatch.onTarget();
   }
 

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -23,10 +24,10 @@ public class HatchLifter extends BasicController {
   private static boolean waxOn = false;
 
  //gotten through testing- converts volts to degrees
-  private static double fullRange = 2000;
+  private static double fullRange = 200; //(!RobotMap.IS_PRACTICE_ROBO)? 20000: 2000; // practice robot 2000;
 
   // gotten though testing-  the number subtracted from top range (2000) to make it be a good range of 40-140
-  private static double offset = -1705;
+  private static double offset = -50; //(!RobotMap.IS_PRACTICE_ROBO)? -25:  -1705; //practice robot -1705;
 
   private static final AnalogPotentiometer hatchpotential = new AnalogPotentiometer(0, fullRange, offset);
 
@@ -36,7 +37,7 @@ public class HatchLifter extends BasicController {
 
   public HatchLifter() {
     // Intert a subsystem name and PID values here
-    super("SubsystemName", 0.16, 0.15, 0.15); //TODO: Correct PID values //previous was 0.015, 0, 0.07
+    super("SubsystemName", 3, 0.15, 0.15); //TODO: Correct PID values //previous was 0.015, 0, 0.07
     this.motor = RobotMap.hatch;
 
     // determine tolerence (accuracy) for each stage
@@ -78,9 +79,10 @@ public class HatchLifter extends BasicController {
 
     // apply a dampen-speed affect to all downward moves.
     if (speed < 0 )
-      speed *= .4;
+      speed *= 1; //previous was *0.4
 
-    motor.set(speed);
+    System.out.println("Motor Speed: " + speed);
+      motor.set(speed);
 
     //Robot.statusMessage("   " + this.getPosition() + "  --> " + speed);
   }

@@ -47,20 +47,24 @@ public class OI {
        Robot.statusMessage("Creating DEEPSPACE/Aisha command buttons...");
     
   //non-PID hatch movement
-    buttonHold(secondaryJoystick, 9, newManualHatch(-0.6)); //manual hatch down
-    buttonHold(secondaryJoystick, 8, newManualHatch(0.95)); //manual hatch up
+    buttonHold(secondaryJoystick, 9, newManualHatch(-1.0)); //manual hatch down //at ND switched signs because comp robot is opposite 
+    buttonHold(secondaryJoystick, 8, newManualHatch(0.99)); //manual hatch up
   
      //PID based hatch-levels...
       //hatchButton
-      buttonPress(secondaryJoystick, 4, new MoveHatchLevel(20  ));
-      buttonPress(secondaryJoystick, 3, new MoveHatchLevel(90 - 22 ));
-      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(140 + 20 ));
+      buttonPress(secondaryJoystick, 4, new MoveHatchLevel(103));//low
+      buttonPress(secondaryJoystick, 3, new MoveHatchLevel((120)));//middle
+      buttonPress(secondaryJoystick, 5, new MoveHatchLevel((136)));//high
     
     //Secondary Joystick Buttons
     //extendButton
-    buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, true)); //hatch open
+    buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, false)); //hatch open
     //retractButton
-    buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, false)); // hatch close
+    buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, true)); // hatch close
+//added these at comp
+    buttonPress(secondaryJoystick, 10, new PistonMovement (Robot.gastonUpDown, true)); //hatch down 
+
+    buttonPress(secondaryJoystick, 11, new PistonMovement (Robot.gastonUpDown, false)); //hatch up 
     }
 
 //DriveChassis calibration testing routines

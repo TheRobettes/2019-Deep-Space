@@ -21,6 +21,6 @@ public class TeamDriveMotor extends CANSparkMax{
         *       "Spark Max Ramp Rate"
         *
         */
-         this.setOpenLoopRampRate( 0.5 );
+         this.setClosedLoopRampRate( 0.05 );
     }
 }
