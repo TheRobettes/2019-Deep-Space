@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
@@ -46,8 +47,12 @@ public class GyroPID extends DriveChassis { //TODO: figure out these numbers
   }
 
   public double getDirection() {
-    
-    return RobotMap.gyro.getAngle(); 
+    double angleRightNow = RobotMap.gyro.getAngle();
+    if (RobotMap.isVictoria()){
+      angleRightNow *= 1.125;
+    }
+    Robot.statusMessage( " Gyro Angle " + angleRightNow);
+    return angleRightNow % 360; 
   }
 
   public void compassDrive (double speed, double angle){

@@ -46,7 +46,7 @@ public class EnVISIONing extends Command {
     pickWhichHatch.addOption("Left Rocket close", new Integer(-60));
     pickWhichHatch.addOption("Right Rocket close", new Integer(60));
     pickWhichHatch.addOption("Left Rocket far", new Integer(-120));
-    pickWhichHatch.addOption("Right Rocket close", new Integer(120));
+    pickWhichHatch.addOption("Right Rocket far", new Integer(120));
     SmartDashboard.putData("Auto mode", pickWhichHatch);
   }
 

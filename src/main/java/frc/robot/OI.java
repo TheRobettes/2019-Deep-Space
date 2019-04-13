@@ -7,10 +7,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.HatchLifter;
@@ -55,13 +57,15 @@ public class OI {
       buttonPress(secondaryJoystick, 3, new MoveHatchLevel(75)); //(RobotMap.IS_PRACTICE_ROBO)? 120: 10));//middle 10
       buttonPress(secondaryJoystick, 5, new MoveHatchLevel(100));//(RobotMap.IS_PRACTICE_ROBO)? 136: 0));//high 0
     
-      if((!RobotMap.isKimmie()) && (!RobotMap.isVictoria()) ) {
+      
       //Secondary Joystick Buttons
     //extendButton
-    buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, false)); //hatch open
+    buttonPress(secondaryJoystick, 6, newGastonMovement(false)); //hatch open
     //retractButton
-    buttonPress(secondaryJoystick, 7, new PistonMovement(Robot.gaston, true)); // hatch close
-//added these at comp
+    buttonPress(secondaryJoystick, 7, newGastonMovement(true)); // hatch close
+    //added these at comp
+
+    if((!RobotMap.isKimmie()) && (!RobotMap.isVictoria()) ) {
     buttonPress(secondaryJoystick, 10, new PistonMovement (Robot.gastonUpDown, true)); //hatch down 
 
     buttonPress(secondaryJoystick, 11, new PistonMovement (Robot.gastonUpDown, false)); //hatch up 
@@ -113,5 +117,59 @@ public static Command newManualHatch(double power){
     };
   return hatchCommand;
 }
+
+public static Command newGastonMovement(boolean isOpenClosed) {
+
+  return new WaitCommand(.1) { //TODO (CHANGE FOR AISHA) PistonMovement(Robot.gaston, isOpenClosed) {
+    @Override
+    protected void initialize() {
+      super.initialize();
+      int currentAngle = (int)Robot.driveChassis.getDirection();
+      int targetAngle = 0;
+      String targetName = null;
+
+      if(Math.abs(currentAngle) > 180 - 15) {
+        targetAngle = 180;
+        targetName = "Loading Station";
+      }
+
+      else if(currentAngle > 120 - 15) {
+        targetAngle = 120;
+        targetName = "Right Rocket Far";
+      }
+
+      else if(currentAngle > 90 - 15) {
+        targetAngle = 90;
+        targetName = "Cargo Left";
+      }
+
+      else if(currentAngle > 30 - 30) {
+        targetAngle = 30;
+        targetName = "Right Rocket Close";
+      }
+
+      else if(currentAngle > -30 - 15) {
+        targetAngle = -30;
+        targetName = "Left Rocket Close";
+      }
+
+      else if(currentAngle > -90 - 15) {
+        targetAngle = -90;
+        targetName = "Cargo Right";
+      }
+
+      else if(currentAngle > -120 - 15) {
+        targetAngle = -120;
+        targetName = "Left Rocket Far";
+      }
+
+
+      String driveAngleText = targetName + ": " + currentAngle + " (" + (targetAngle - currentAngle) + ")";
+      DriverStation.reportWarning(driveAngleText, false);
+    }
+  };
+
+}
+
 
 }

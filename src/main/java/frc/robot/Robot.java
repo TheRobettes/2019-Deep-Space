@@ -7,6 +7,7 @@
 
 /* PRE-CHAMPS TO DO LIST:
 ~~(0. Test practice mode for automatic gastonUpDown) ~~ GO BACK AND DO THIS
+  0.5. Also retest new ramp rate
 ~~(1. Add warning lines to record hatch level) ~~ DONE
 2. Automatically log "Gyro Get Direction Angles" when the Gaston is opened (see current angle) and closed (see last angle)
 3. Make a button that turns off air compressor and possibly gets ready to climb 
