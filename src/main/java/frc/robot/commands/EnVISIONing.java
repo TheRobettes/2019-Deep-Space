@@ -55,7 +55,7 @@ public class EnVISIONing extends Command {
   protected void initialize() {
     direction = turningDirection = pickWhichHatch.getSelected().hashCode();
     Robot.driveChassis.enable();
-    //Snapshot.isVisionCommandEnabled = true;
+    Snapshot.enablePipeline();
     System.out.println("~Initializing Vision~: " + direction);
 
   }
@@ -186,7 +186,7 @@ public class EnVISIONing extends Command {
   @Override
   protected void end() {
     Robot.driveChassis.disable();
-    //Snapshot.isVisionCommandEnabled = false;
+    Snapshot.disablePipeline();
   }
 
   // Called when another command which requires one or more of the same
