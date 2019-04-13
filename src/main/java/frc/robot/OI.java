@@ -41,22 +41,22 @@ public class OI {
     buttonHold(secondaryJoystick, 1, new EnVISIONing());
 
     Robot.statusMessage("OI-command-buttons pretest... " + RobotMap.isKimmie() + RobotMap.isVictoria());
-    if((!RobotMap.isKimmie()) && (!RobotMap.isVictoria()) ) {
     
 
        Robot.statusMessage("Creating DEEPSPACE/Aisha command buttons...");
     
   //non-PID hatch movement
-    buttonHold(secondaryJoystick, 9, newManualHatch(-1.0)); //manual hatch down //at ND switched signs because comp robot is opposite 
-    buttonHold(secondaryJoystick, 8, newManualHatch(0.99)); //manual hatch up
+    buttonHold(secondaryJoystick, 9, newManualHatch(HatchLifter.maxDiveBomb)); //manual hatch down //at ND switched signs because comp robot is opposite 
+    buttonHold(secondaryJoystick, 8, newManualHatch(HatchLifter.maxBlastOff)); //manual hatch up
   
      //PID based hatch-levels...
-      //hatchButton
-      buttonPress(secondaryJoystick, 4, new MoveHatchLevel(103));//low
-      buttonPress(secondaryJoystick, 3, new MoveHatchLevel((120)));//middle
-      buttonPress(secondaryJoystick, 5, new MoveHatchLevel((136)));//high
+      //hatchButton Aiysha has range 50 (bottom) - 105 (top)
+      buttonPress(secondaryJoystick, 4, new MoveHatchLevel(55)); //(RobotMap.IS_PRACTICE_ROBO)? 103: 20));//low 20
+      buttonPress(secondaryJoystick, 3, new MoveHatchLevel(75)); //(RobotMap.IS_PRACTICE_ROBO)? 120: 10));//middle 10
+      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(100));//(RobotMap.IS_PRACTICE_ROBO)? 136: 0));//high 0
     
-    //Secondary Joystick Buttons
+      if((!RobotMap.isKimmie()) && (!RobotMap.isVictoria()) ) {
+      //Secondary Joystick Buttons
     //extendButton
     buttonPress(secondaryJoystick, 6, new PistonMovement(Robot.gaston, false)); //hatch open
     //retractButton
@@ -99,6 +99,16 @@ public static Command newManualHatch(double power){
       protected void execute(){
         super.execute();
         SmartDashboard.putNumber ("hatch position ", HatchLifter.getHatchPosition());
+      }
+      @Override
+      protected void initialize() {
+        super.initialize();
+        MoveHatchLevel.logHatchLevel("beginning movement");
+      }
+      @Override
+      protected void end() {
+        super.end();
+        MoveHatchLevel.logHatchLevel("ending movement");
       }
     };
   return hatchCommand;

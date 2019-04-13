@@ -38,10 +38,10 @@ public class EnVISIONing extends Command {
     // eg. requires(chassis);
     requires(Robot.driveChassis);
 
-    //choices on our dumb dashboard
+    //choices on our dumb dashboard - that's not nice :(
     pickWhichHatch.setDefaultOption("Cargo front", new Integer(0));
-    pickWhichHatch.addOption("Cargo Left", new Integer(90)); 
-    pickWhichHatch.addOption("Cargo Right", new Integer(-90));
+    //pickWhichHatch.addOption("Cargo Left", new Integer(90)); 
+    //pickWhichHatch.addOption("Cargo Right", new Integer(-90));
     pickWhichHatch.addOption("Loading Station", new Integer(180));
     pickWhichHatch.addOption("Left Rocket close", new Integer(-60));
     pickWhichHatch.addOption("Right Rocket close", new Integer(60));

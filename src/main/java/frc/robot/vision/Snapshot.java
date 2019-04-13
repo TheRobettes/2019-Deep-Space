@@ -33,7 +33,7 @@ public class Snapshot {
     public static final int IMG_WIDTH = 160;
     public static final int IMG_HEIGHT = 120;
     private static final int TELEOP_EXPOSURE = 30; //30 is for practice bot TODO: test exposure for Aisha
-    public static int VISION_EXPOSURE = (RobotMap.isVictoria()) ? 15 : 25; // TODO: test exposure
+    public static int VISION_EXPOSURE = (RobotMap.isVictoria()) ? 15 : 30; // TODO: test exposure
     private static UsbCamera camera1 = null;
     private static CvSink cvSink1 = null;
     private static GripPipeline pipeline = new GripPipeline();

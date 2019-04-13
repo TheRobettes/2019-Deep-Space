@@ -24,20 +24,25 @@ public class HatchLifter extends BasicController {
   private static boolean waxOn = false;
 
  //gotten through testing- converts volts to degrees
-  private static double fullRange = 200; //(!RobotMap.IS_PRACTICE_ROBO)? 20000: 2000; // practice robot 2000;
+  private static double fullRange = (RobotMap.IS_PRACTICE_ROBO)? 500: 200; // practice robot 2000;
 
   // gotten though testing-  the number subtracted from top range (2000) to make it be a good range of 40-140
-  private static double offset = -50; //(!RobotMap.IS_PRACTICE_ROBO)? -25:  -1705; //practice robot -1705;
+  private static double offset = (RobotMap.IS_PRACTICE_ROBO)? -377: -70; //(!RobotMap.IS_PRACTICE_ROBO)? -25:  -1705; //practice robot -1705;
 
   private static final AnalogPotentiometer hatchpotential = new AnalogPotentiometer(0, fullRange, offset);
 
 
   protected Solenoid brakePiston = RobotMap.brake;
   
+  public static final double maxBlastOff = 0.45;
+  public static final double maxDiveBomb = -0.45;
+  private static final double P_VALUE = 3;
+  private static final double I_VALUE = 0.15;
+  private static final double D_VALUE = 0.15;
 
   public HatchLifter() {
     // Intert a subsystem name and PID values here
-    super("SubsystemName", 3, 0.15, 0.15); //TODO: Correct PID values //previous was 0.015, 0, 0.07
+    super("SubsystemName", P_VALUE, I_VALUE, D_VALUE); //TODO: Correct PID values //previous was 0.015, 0, 0.07
     this.motor = RobotMap.hatch;
 
     // determine tolerence (accuracy) for each stage
@@ -47,6 +52,7 @@ public class HatchLifter extends BasicController {
     if(brakePiston!=null)
     brakePiston.set(waxOn);
 
+    this.setOutputRange(maxDiveBomb, maxBlastOff);
   }
 
   public static double getHatchPosition() {
@@ -79,7 +85,7 @@ public class HatchLifter extends BasicController {
 
     // apply a dampen-speed affect to all downward moves.
     if (speed < 0 )
-      speed *= 1; //previous was *0.4
+      speed *= 0.7; //previous was *0.4
 
     System.out.println("Motor Speed: " + speed);
       motor.set(speed);
@@ -95,12 +101,16 @@ public class HatchLifter extends BasicController {
 
   @Override
   public  void activate(){
-    brakePiston.set(!waxOn);
+    if (brakePiston != null) {
+      brakePiston.set(!waxOn);
+    }
     Robot.statusMessage("  brake off ( at " + getPosition() + ")");
   }
 
   public  void deactivate(){
-    brakePiston.set(waxOn);
+    if (brakePiston != null) {
+      brakePiston.set(waxOn);
+    }
     Robot.statusMessage(" brake on ( at " + getPosition() + ")");
   }
 }
