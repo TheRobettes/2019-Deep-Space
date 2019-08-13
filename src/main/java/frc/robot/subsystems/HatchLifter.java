@@ -36,9 +36,10 @@ public class HatchLifter extends BasicController {
   
   public static final double maxBlastOff = 0.45;
   public static final double maxDiveBomb = -0.45;
-  private static final double P_VALUE = 3;
-  private static final double I_VALUE = 0.15;
-  private static final double D_VALUE = 0.15;
+  private static final double P_VALUE = 0.04; //3; - changed at champs
+  private static final double I_VALUE = 0; //0.15; - changed at champs
+  private static final double D_VALUE = 0; //0.15; - changed at champs
+  private static double previousInputValue = 0;
 
   public HatchLifter() {
     // Intert a subsystem name and PID values here
@@ -77,17 +78,17 @@ public class HatchLifter extends BasicController {
     // Return your input value for the PID loop
     // e.g. a sensor, like a potentiometer:
     // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    return hatchpotential.get();
+    return previousInputValue = hatchpotential.get();
   }
 
   @Override
   protected void usePIDOutput(double speed) {
 
     // apply a dampen-speed affect to all downward moves.
-    if (speed < 0 )
-      speed *= 0.7; //previous was *0.4
+   // if (speed < 0 )
+      //speed *= 0.7; //previous was *0.4
 
-    System.out.println("Motor Speed: " + speed);
+    System.out.println("Motor Speed: " + speed + " Position: " + previousInputValue );
       motor.set(speed);
 
     //Robot.statusMessage("   " + this.getPosition() + "  --> " + speed);

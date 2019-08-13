@@ -40,14 +40,14 @@ public class MoveHatchLevel extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() { //TODO:test these and see if they are necessary or can be avoided with better I and D vlues 
-    if(targetHeight == 75 && previousAngle <= 55) { // for practice robo - middle angle = 120, low angle (with range) = 108;
+    /*if(targetHeight == 75 && previousAngle <= 55) { // for practice robo - middle angle = 120, low angle (with range) = 108;
       targetHeight = 60; //practice was (115) 
     }
 
     else if(targetHeight == 75 && previousAngle >= 100) { //for practice robo - high angle (with range) = 131; (for aisha used to be 118 & 176)
       targetHeight = 95; //practice was (124) (for Aisha used to be 126.7)
 
-    }
+    }*/
 
     Robot.hatch.setSetpoint(targetHeight);
 

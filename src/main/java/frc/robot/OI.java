@@ -53,9 +53,9 @@ public class OI {
   
      //PID based hatch-levels...
       //hatchButton Aiysha has range 50 (bottom) - 105 (top)
-      buttonPress(secondaryJoystick, 4, new MoveHatchLevel(55)); //(RobotMap.IS_PRACTICE_ROBO)? 103: 20));//low 20
-      buttonPress(secondaryJoystick, 3, new MoveHatchLevel(75)); //(RobotMap.IS_PRACTICE_ROBO)? 120: 10));//middle 10
-      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(100));//(RobotMap.IS_PRACTICE_ROBO)? 136: 0));//high 0
+      buttonPress(secondaryJoystick, 4, new MoveHatchLevel(79)); //(RobotMap.IS_PRACTICE_ROBO)? 103: 20));//low 20
+      buttonPress(secondaryJoystick, 3, new MoveHatchLevel(88)); //(RobotMap.IS_PRACTICE_ROBO)? 120: 10));//middle 10
+      buttonPress(secondaryJoystick, 5, new MoveHatchLevel(130));//(RobotMap.IS_PRACTICE_ROBO)? 136: 0));//high 0
     
       
       //Secondary Joystick Buttons
@@ -120,7 +120,7 @@ public static Command newManualHatch(double power){
 
 public static Command newGastonMovement(boolean isOpenClosed) {
 
-  return new WaitCommand(.1) { //TODO (CHANGE FOR AISHA) PistonMovement(Robot.gaston, isOpenClosed) {
+  return new PistonMovement(Robot.gaston, isOpenClosed) {
     @Override
     protected void initialize() {
       super.initialize();
