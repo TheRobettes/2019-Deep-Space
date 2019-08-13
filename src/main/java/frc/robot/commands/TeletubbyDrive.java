@@ -27,15 +27,17 @@ public class TeletubbyDrive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (practiceSpeed > 0)
+    if (practiceSpeed > 0) {
+      SmartDashboard.putNumber("tele-init-twist", OI.secondaryJoystick.getTwist());
       SmartDashboard.putNumber("tele-init-practiceSpeed", practiceSpeed);
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    practiceSpeed = -OI.secondaryJoystick.getTwist() * 0.25 + 0.75; //changed for demo purposes
-    Robot.driveChassis.arcadeDrive(practiceSpeed * -OI.xBox.getY(), OI.xBox.getRawAxis(4)); //changed for demo purposes
+    practiceSpeed = -OI.secondaryJoystick.getTwist() * 0.2 + 0.55; //changed for demo purposes
+    Robot.driveChassis.arcadeDrive(practiceSpeed * -OI.xBox.getY(), OI.xBox.getRawAxis(4)*.6); //changed for demo purposes
 
   }
 

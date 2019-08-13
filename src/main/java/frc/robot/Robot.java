@@ -39,7 +39,7 @@ import frc.robot.vision.Snapshot;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static RobotMap robotID = new RobotMap(RobotMap.VICTORIA);
+  public static RobotMap robotID = new RobotMap(RobotMap.DEEPSPACE);
   public static GyroPID driveChassis = new EncoderPID();
   public static HatchLifter hatch = new HatchLifter();
   public static PistonController gastonUpDown;  
