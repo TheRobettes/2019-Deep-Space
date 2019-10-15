@@ -7,12 +7,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+
+import com.revrobotics.CANEncoder;
+
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -29,14 +28,15 @@ public class HatchLifter extends BasicController {
   // gotten though testing-  the number subtracted from top range (2000) to make it be a good range of 40-140
   private static double offset = (RobotMap.IS_PRACTICE_ROBO)? -377: -70; //(!RobotMap.IS_PRACTICE_ROBO)? -25:  -1705; //practice robot -1705;
 
-  private static final AnalogPotentiometer hatchpotential = new AnalogPotentiometer(0, fullRange, offset);
+  private static final CANEncoder hatchEncoder = RobotMap.hatchEncoder; 
+    
 
 
   protected Solenoid brakePiston = RobotMap.brake;
   
-  public static final double maxBlastOff = 0.45;
+  public static final double maxBlastOff = 0.6;
   public static final double maxDiveBomb = -0.45;
-  private static final double P_VALUE = 0.04; //3; - changed at champs
+  private static final double P_VALUE = 0.03; //3; - changed at champs
   private static final double I_VALUE = 0; //0.15; - changed at champs
   private static final double D_VALUE = 0; //0.15; - changed at champs
   private static double previousInputValue = 0;
@@ -57,7 +57,7 @@ public class HatchLifter extends BasicController {
   }
 
   public static double getHatchPosition() {
-    return hatchpotential.get();
+    return previousInputValue = hatchEncoder.getPosition() + 45.0;
   }
 
  
@@ -76,9 +76,8 @@ public class HatchLifter extends BasicController {
   @Override
   protected double returnPIDInput() {
     // Return your input value for the PID loop
-    // e.g. a sensor, like a potentiometer:
-    // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    return previousInputValue = hatchpotential.get();
+    SmartDashboard.putNumber ("hatch position ",getHatchPosition());
+    return previousInputValue;
   }
 
   @Override

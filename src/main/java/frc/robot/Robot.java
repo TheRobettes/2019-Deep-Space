@@ -41,8 +41,9 @@ import frc.robot.vision.Snapshot;
 public class Robot extends TimedRobot {
   public static RobotMap robotID = new RobotMap(RobotMap.DEEPSPACE);
   public static GyroPID driveChassis = new EncoderPID();
-  public static HatchLifter hatch = new HatchLifter();
-  public static PistonController gastonUpDown;  
+  public static HatchLifter hatch = new HatchLifter();//this is also a BasicController!!!!
+  public static BasicController cargoHolderSystem = new BasicController(RobotMap.cargoHandler);
+  public static PistonController gastonUpDown = new PistonController(RobotMap.gastonUpAndDown); 
   public static PistonController gaston = new PistonController(RobotMap.gaston);
   public static OI m_oi;
 
@@ -57,7 +58,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     //TODO: need a print for practice versus comp
   
-    gastonUpDown = new PistonController(RobotMap.gastonUpAndDown);
     /*@Override
       public void initDefaultCommand() {
        setDefaultCommand(new PistonMovement(gastonUpDown , true));
