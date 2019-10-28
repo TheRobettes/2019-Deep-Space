@@ -5,6 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/* PRE-CHAMPS TO DO LIST:
+~~(0. Test practice mode for automatic gastonUpDown) ~~ GO BACK AND DO THIS
+  0.5. Also retest new ramp rate
+~~(1. Add warning lines to record hatch level) ~~ DONE
+2. Automatically log "Gyro Get Direction Angles" when the Gaston is opened (see current angle) and closed (see last angle) DONE 
+3. Make a button that turns off air compressor and possibly gets ready to climb 
+4. Investigate if print/loop overruns can be evaded with inactive vision logic
+*/
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,6 +22,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.PistonMovement;
 import frc.robot.commands.TeletubbyDrive;
 import frc.robot.subsystems.BasicController;
 import frc.robot.subsystems.EncoderPID;
@@ -31,8 +41,9 @@ import frc.robot.vision.Snapshot;
 public class Robot extends TimedRobot {
   public static RobotMap robotID = new RobotMap(RobotMap.DEEPSPACE);
   public static GyroPID driveChassis = new EncoderPID();
-  public static HatchLifter hatch = new HatchLifter();
-  public static PistonController gastonUpDown = new PistonController(RobotMap.gastonUpAndDown);
+  public static HatchLifter hatch = new HatchLifter();//this is also a BasicController!!!!
+  public static BasicController cargoHolderSystem = new BasicController(RobotMap.cargoHandler);
+  public static PistonController gastonUpDown = new PistonController(RobotMap.gastonUpAndDown); 
   public static PistonController gaston = new PistonController(RobotMap.gaston);
   public static OI m_oi;
 
@@ -45,7 +56,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    //Todo need a print for practice versus comp
+    //TODO: need a print for practice versus comp
+  
+    /*@Override
+      public void initDefaultCommand() {
+       setDefaultCommand(new PistonMovement(gastonUpDown , true));
+      } //end of initDefaultCommand
+    }*/ //end of anonymous piston controller 
+
+
     m_oi = new OI();
     m_chooser.setDefaultOption("Default Auto", new TeletubbyDrive());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -103,7 +122,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    m_autonomousCommand = new PistonMovement(Robot.gastonUpDown, false);
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",

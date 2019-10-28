@@ -32,13 +32,13 @@ public class Snapshot {
     private static final int FPS = 15; // frames per second
     public static final int IMG_WIDTH = 160;
     public static final int IMG_HEIGHT = 120;
-    private static final int TELEOP_EXPOSURE = 15;
-    public static int VISION_EXPOSURE = (RobotMap.isVictoria()) ? 15 : 4; // TODO: test exposure
+    private static final int TELEOP_EXPOSURE = 30; //30 is for practice bot TODO: test exposure for Aisha
+    public static int VISION_EXPOSURE = 15; // TODO: test exposure
     private static UsbCamera camera1 = null;
     private static CvSink cvSink1 = null;
     private static GripPipeline pipeline = new GripPipeline();
     public static boolean isImageReady = false;
-    public static boolean isVisionCommandEnabled = true;
+    private static boolean isVisionCommandEnabled = true;
     private static ArrayList<Tape> rectangles = new ArrayList<Tape>();
     static final Scalar WHITE = new Scalar(255, 255, 255);
 
@@ -50,11 +50,21 @@ public class Snapshot {
         lefty, middley, righty, noney
     }
 
+    public static void enablePipeline(){
+        isVisionCommandEnabled = true;
+        camera1.setExposureManual(VISION_EXPOSURE);
+    } 
+
+    public static void disablePipeline(){
+        isVisionCommandEnabled = false; 
+        camera1.setExposureManual(TELEOP_EXPOSURE);
+    }
+
     public static void cameraInit() {
         camera1 = CameraServer.getInstance().startAutomaticCapture(0);
         camera1.setResolution(IMG_WIDTH, IMG_HEIGHT);
         camera1.setFPS(FPS);
-        camera1.setExposureManual(VISION_EXPOSURE);
+        camera1.setExposureManual(TELEOP_EXPOSURE);
         cvSink1 = CameraServer.getInstance().getVideo(camera1);
         cvSink1.setEnabled(true);
 

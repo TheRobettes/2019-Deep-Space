@@ -10,16 +10,19 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
 public class GyroPID extends DriveChassis { //TODO: figure out these numbers 
-  private static final double gyro_P_Value = (RobotMap.isVictoria()) ? 0.003
+  private static final double gyro_P_Value = (RobotMap.isVictoria()) ? 0.025
    :0.065;
-  private static final double gyro_I_Value = 0.0045;
-  private static final double gyro_D_Value = 0.2;
+  private static final double gyro_I_Value = (RobotMap.isVictoria()) ? 0.00
+   :0.0045;
+  private static final double gyro_D_Value = (RobotMap.isVictoria()) ? 0.02
+   :0.2;
   protected double speedPower = 0.0;
   protected double rotationPower = 0.0;
   protected double angleOffset = 0.0;
@@ -44,7 +47,12 @@ public class GyroPID extends DriveChassis { //TODO: figure out these numbers
   }
 
   public double getDirection() {
-    return RobotMap.gyro.getAngle(); 
+    double angleRightNow = RobotMap.gyro.getAngle();
+    if (RobotMap.isVictoria()){
+      angleRightNow *= 1.125;
+    }
+    Robot.statusMessage( " Gyro Angle " + angleRightNow);
+    return angleRightNow % 360; 
   }
 
   public void compassDrive (double speed, double angle){

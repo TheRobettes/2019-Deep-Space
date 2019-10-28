@@ -7,12 +7,14 @@
 
 package frc.robot;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
+
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
@@ -30,7 +32,7 @@ import frc.robot.vision.Snapshot;
  */
 public class RobotMap {
 
-  public static final boolean IS_PRACTICE_ROBO = true; 
+  public static final boolean IS_PRACTICE_ROBO = false;
   
   public static final String KIMMIE = "Kimmie";
   public static final String VICTORIA = "Victoria";
@@ -43,6 +45,7 @@ public class RobotMap {
   public static SpeedController leftDrive;
   public static SpeedController rightDrive;
   public static SpeedController hatch;
+  public static SpeedController cargoHandler;
   
   //VRM
   public static Solenoid gaston = null;
@@ -50,13 +53,14 @@ public class RobotMap {
   public static Solenoid gastonUpAndDown = null;
   
 
-  //DIO Sensors
+  //DIGITAL Sensors
   public static DigitalInput leftLightSensor = null;
   public static DigitalInput middleLightSensor = null;
   public static DigitalInput rightLightSensor = null;
   public static Encoder leftDriveEncoder = null;
   public static Encoder rightDriveEncoder = null;
-
+  public static CANEncoder hatchEncoder = null;
+    
   //current gyroscope 
   public static Gyro gyro = new ADXRS450_Gyro();
 
@@ -85,7 +89,7 @@ public class RobotMap {
       ISVICTORIA = true;
 
       leftDriveEncoderPort = 4;
-      rightDriveEncoderPort = 2;
+      rightDriveEncoderPort = 6;
 
         SpeedController leftFront = new Spark(0);
         leftFront.setInverted(false);
@@ -115,20 +119,39 @@ public class RobotMap {
 
       //  .... NEW WAY !! ...
       leftDrive = new SpeedControllerGroup(
-        tryNewSparkMax(4,MotorType.kBrushless, false ), //need to check on Aisha whether IS_PRACTICE_ROBOT works for inversion
-        tryNewSparkMax(5,MotorType.kBrushless, false )
+        tryNewSparkMax(4,MotorType.kBrushless, !IS_PRACTICE_ROBO ), 
+        tryNewSparkMax(5,MotorType.kBrushless, !IS_PRACTICE_ROBO)
           );
 
       rightDrive = new SpeedControllerGroup(
-        tryNewSparkMax(6,MotorType.kBrushless, IS_PRACTICE_ROBO ),
-        tryNewSparkMax(7,MotorType.kBrushless, IS_PRACTICE_ROBO )
+        tryNewSparkMax(6,MotorType.kBrushless, (IS_PRACTICE_ROBO)? IS_PRACTICE_ROBO: !IS_PRACTICE_ROBO ), //Aisha = !IS_PRACTICE_ROBO
+        tryNewSparkMax(7,MotorType.kBrushless, (IS_PRACTICE_ROBO)? IS_PRACTICE_ROBO: !IS_PRACTICE_ROBO )
            );
       
-      hatch = tryNewSparkMax (3,MotorType.kBrushed);
+      hatch = tryNewSparkMax (2,MotorType.kBrushed);
+      
 
-      gaston = new Solenoid(1); 
+      //left and right intake motors combined as one
+      this.cargoHandler = new SpeedControllerGroup(
+          tryNewSparkMax(3,MotorType.kBrushed),
+          tryNewSparkMax(1,MotorType.kBrushed)
+          );
+
+      //set scale values for the hatchEncoder
+      hatchEncoder.setPositionConversionFactor(4000);
+
+      gaston = new Solenoid(1) {
+        @Override
+        public void set(boolean on){
+          super.set( !on );
+        }
+      }; 
+
       brake = new Solenoid (2);
       gastonUpAndDown = new Solenoid(3);
+
+      
+
     
     }
 
@@ -160,7 +183,7 @@ public class RobotMap {
   }
 
   private SpeedController tryNewSparkMax(int port, MotorType motorType) {
-    SpeedController motor;
+    CANSparkMax motor = null;
    
     // First, attempt connecting to an expected CANID...
     try {
@@ -175,21 +198,20 @@ public class RobotMap {
 
       //initializing team drive motors versus hatch arm motor 
       motor = 
-        /*  retain, as a usage-history regarding how ramp-up rates
-        *     could be applied ... notably if there wasn't a conversion
-        *           from belts to chains...
-        *
-        ( motorType == MotorType.kBrushless && port <= 5 ) 
-            ? new TeamDriveMotor(port) //if brushed- built in velocity controled
-            :  
-        */
-         new CANSparkMax(port, motorType); //regular for hatch
+        ( motorType == MotorType.kBrushless)  
+            ? new TeamDriveMotor(port) //if brushed- Use Spark-MAX for velocity control
+            : new CANSparkMax(port, motorType); // else - regular for hatch
+
+      //initialize the hatch encoder to the correct motor
+      if (port == 3){
+        this.hatchEncoder = motor.getEncoder(EncoderType.kQuadrature, 0);
+      }      
     }
 
     //  ... if that failed for any reason, do next-new statement as an fault-correction.
     catch (Exception ex) {
       ex.printStackTrace();
-      motor = new Spark(port);
+      //motor = new SparkMax(port);
     }
 
     return motor;

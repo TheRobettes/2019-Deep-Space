@@ -15,12 +15,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  * Add your docs here.
  */
-public abstract class BasicController extends PIDSubsystem {
+public class BasicController extends PIDSubsystem {
   protected SpeedController motor;
   
-/*public BasicController(SpeedController motor){
+public BasicController(SpeedController motor){
+  super(0, 0, 0);
    this.motor = motor;
-}*/
+}
 
 public BasicController( String subsystemName, double pGain, double iGain, double  dGain){
    super(subsystemName, pGain, iGain, dGain);
@@ -37,8 +38,17 @@ public BasicController( String subsystemName, double pGain, double iGain, double
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+  @Override
+  protected double returnPIDInput() {
+    // Return your input value for the PID loop
+    // e.g. a sensor, like a potentiometer:
+    // yourPot.getAverageVoltage() / kYourMaxVoltage;
+    return 0;
+  }
 
-  public abstract void activate();
-
-  public abstract void deactivate();
+  @Override
+  protected void usePIDOutput(double speed) {
+  }
+  public void activate(){}
+  public void deactivate(){}
 }

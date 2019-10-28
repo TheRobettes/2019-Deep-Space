@@ -38,16 +38,16 @@ public class EnVISIONing extends Command {
     // eg. requires(chassis);
     requires(Robot.driveChassis);
 
-    //choices on our dumb dashboard
+    //choices on our dumb dashboard - that's not nice :(
     pickWhichHatch.setDefaultOption("Cargo front", new Integer(0));
-    pickWhichHatch.addOption("Cargo Left", new Integer(90)); 
-    pickWhichHatch.addOption("Cargo Right", new Integer(-90));
+    //pickWhichHatch.addOption("Cargo Left", new Integer(90)); 
+    //pickWhichHatch.addOption("Cargo Right", new Integer(-90));
     pickWhichHatch.addOption("Loading Station", new Integer(180));
     pickWhichHatch.addOption("Left Rocket close", new Integer(-60));
     pickWhichHatch.addOption("Right Rocket close", new Integer(60));
     pickWhichHatch.addOption("Left Rocket far", new Integer(-120));
-    pickWhichHatch.addOption("Right Rocket close", new Integer(120));
-    SmartDashboard.putData("Auto mode", pickWhichHatch);
+    pickWhichHatch.addOption("Right Rocket far", new Integer(120));
+    //SmartDashboard.putData("Auto mode", pickWhichHatch);
   }
 
   // Called just before this Command runs the first time
@@ -55,7 +55,7 @@ public class EnVISIONing extends Command {
   protected void initialize() {
     direction = turningDirection = pickWhichHatch.getSelected().hashCode();
     Robot.driveChassis.enable();
-    //Snapshot.isVisionCommandEnabled = true;
+    Snapshot.enablePipeline();
     System.out.println("~Initializing Vision~: " + direction);
 
   }
@@ -186,7 +186,7 @@ public class EnVISIONing extends Command {
   @Override
   protected void end() {
     Robot.driveChassis.disable();
-    //Snapshot.isVisionCommandEnabled = false;
+    Snapshot.disablePipeline();
   }
 
   // Called when another command which requires one or more of the same
